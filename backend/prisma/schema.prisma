@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String
+  offers   JobOffer[]
+  profiles UserProfile[]
+}
+
+model JobOffer {
+  id           Int      @id @default(autoincrement())
+  title        String
+  location     String
+  company      String?   // Nouvelle colonne
+  score        Int?      // Score d'analyse
+  alerts       String?   // JSON.stringify([]) des alertes
+  status       String    // 'active', 'rejected', 'shared'
+  url          String    // URL de l'offre
+  source       String    // Source du site (LinkedIn, Indeed, WTTJ...)
+  contractType String?   // Type de contrat (CDI, CDD...)
+  salary       String?   // Fourchette ou valeur du salaire
+  description  String?   // Description complète de l'offre
+  skills       Skill[]   // Compétences requises par l'offre
+  skillsText   String?   // Compétences requises par l'offre (MVP, liste séparée par virgule)
+  skillsDynamicText String?   // Compétences extraites dynamiquement de l'offre
+  jobMatches   JobMatch[] // Relations avec les profils
+  user         User      @relation(fields: [userId], references: [id])
+  userId       Int
+}
+
+model UserProfile {
+  id            Int       @id @default(autoincrement())
+  name          String
+  title         String?
+  user          User      @relation(fields: [userId], references: [id])
+  userId        Int
+  skills        Skill[]   // Relation avec les compétences
+  experiences   Experience[]
+  education     Education[]
+  certifications String?   // Liste des certifications au format JSON
+  jobMatches    JobMatch[] // Relations avec les offres
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Skill {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  category   String?     // Peut être "language", "framework", "tool", etc.
+  jobOffers  JobOffer[]
+  profiles   UserProfile[]
+}
+
+model Experience {
+  id          Int         @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean     @default(false)
+  description String?
+  skills      String?     // Liste des compétences au format JSON
+  profile     UserProfile @relation(fields: [profileId], references: [id])
+  profileId   Int
+}
+
+model Education {
+  id          Int         @id @default(autoincrement())
+  degree      String
+  institution String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean     @default(false)
+  description String?
+  profile     UserProfile @relation(fields: [profileId], references: [id])
+  profileId   Int
+}
+
+model JobMatch {
+  id              Int        @id @default(autoincrement())
+  jobOffer        JobOffer   @relation(fields: [jobOfferId], references: [id])
+  jobOfferId      Int
+  userProfile     UserProfile @relation(fields: [userProfileId], references: [id])
+  userProfileId   Int
+  matchPercentage Int
+  matchingSkills  String     // JSON tableau des compétences correspondantes
+  missingSkills   String     // JSON tableau des compétences manquantes
+  createdAt       DateTime   @default(now())
+  
+  @@unique([jobOfferId, userProfileId])
+}

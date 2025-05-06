@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>JobScan</title>
+  <style>
+    /* Ajoute ici tes styles ou importe styles.scss via Vite si besoin */
+  </style>
+</head>
+<body>
+  <h1>JobScan</h1>
+  <div class="message">
+    Analysez cette offre d'emploi pour détecter les red flags potentiels.
+  </div>
+  <div id="login-section">
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Email" required style="margin-bottom:6px;display:block;width:100%" />
+      <input type="password" id="login-password" placeholder="Mot de passe" required style="margin-bottom:6px;display:block;width:100%" />
+      <button type="submit" class="button" style="width:100%">Se connecter</button>
+    </form>
+    <div id="login-status" style="margin-top:8px;font-size:13px;"></div>
+  </div>
+  <button class="button" id="analyze-btn">Analyser cette page</button>
+  <div id="analysis-results" class="hidden">
+    <div id="alerts-container"></div>
+  </div>
+  <script type="module" src="index.ts"></script>
+</body>
+</html>

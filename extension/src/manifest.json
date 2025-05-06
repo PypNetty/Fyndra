@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "JobScan",
+  "version": "0.1.0",
+  "description": "Version JobScan",
+  "permissions": [
+    "tabs", 
+    "storage" 
+  ],
+  "action": {
+    "default_popup": "popup/index.html"
+  },
+  "background": {
+    "service_worker": "background/index.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "assets/content.js"
+      ]
+    }
+  ]
+}

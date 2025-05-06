@@ -1,0 +1,15 @@
+packages:
+  - backend
+  - extension
+  - frontend
+  - shared
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - canvas
+  - esbuild
+  - prisma
+  - sqlite3
+  - tesseract.js
