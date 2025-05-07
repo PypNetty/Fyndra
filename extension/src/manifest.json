@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "JobScan",
+  "name": "Fyndra",
   "version": "0.1.0",
-  "description": "Version JobScan",
+  "description": "Version Fyndra",
   "permissions": [
     "tabs", 
     "storage" 

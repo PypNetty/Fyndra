@@ -7,7 +7,7 @@ type MessageRequest = {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("JobScan extension installed");
+  console.log('Fyndra extension installed');
 });
 
 chrome.runtime.onMessage.addListener(
@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender, // Utilise le type chrome ici
     sendResponse: (response?: any) => void
   ) => {
-    if (message.action === "getTabInfo") {
+    if (message.action === 'getTabInfo') {
       chrome.tabs.query(
         {
           active: true,
@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(
           if (tabs.length > 0 && tabs[0].id && tabs[0].url) {
             sendResponse({ tabId: tabs[0].id, url: tabs[0].url });
           } else {
-            sendResponse({ error: "No active tab found" });
+            sendResponse({ error: 'No active tab found' });
           }
         }
       );

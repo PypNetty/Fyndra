@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"; import SidebarNav from "../components/SidebarNav"; import TopNav from "../components/TopNav";
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 
 const Settings: React.FC = () => { const [name, setName] = useState(""); const [email, setEmail] = useState(""); const [language, setLanguage] = useState("fr"); const [darkMode, setDarkMode] = useState(false); const [minScore, setMinScore] = useState(50); const [cvName, setCvName] = useState(""); const [lmName, setLmName] = useState("");
 
@@ -15,7 +16,12 @@ if (preferences) {
 
 const handleSave = () => { localStorage.setItem("profile", JSON.stringify({ name, email, cvName, lmName })); localStorage.setItem("preferences", JSON.stringify({ language, darkMode, minScore })); alert("Paramètres sauvegardés !"); };
 
-return ( <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex"> <SidebarNav /> <div className="flex-1 flex flex-col"> <TopNav /> <div className="flex-1 px-6 py-10"> <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8 space-y-10 border-t-8 border-blue-500"> <h1 className="text-3xl font-bold text-blue-700">Paramètres</h1>
+return (
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex flex-col">
+    <Navbar />
+    <div className="flex-1 px-6 py-10">
+      <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8 space-y-10 border-t-8 border-blue-500">
+        <h1 className="text-3xl font-bold text-blue-700">Paramètres</h1>
         {/* Section Profil */}
         <section>
           <h2 className="text-xl font-semibold mb-4 text-blue-600">Profil utilisateur</h2>
@@ -85,7 +91,6 @@ return ( <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-10
       </div>
     </div>
   </div>
-</div>
 ); };
 
 export default Settings;

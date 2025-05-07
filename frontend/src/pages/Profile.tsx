@@ -8,8 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { HandRaisedIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast";
-import SidebarNav from '../components/SidebarNav';
-import TopNav from '../components/TopNav';
+import { div } from "framer-motion/client";
 
 const SUGGESTIONS_BY_TITLE: Record<string, string[]> = {
   front: ["JavaScript", "TypeScript", "React", "Angular", "VueJs", "HTML", "CSS"],
@@ -80,7 +79,13 @@ const Profile: React.FC = () => {
       e.preventDefault();
       const val = techInput.trim();
       if (!technos.includes(val)) {
-        setTechnos([...technos, val]);
+        setTechnos(prev => {
+          const newTechs = [...prev, val];
+          // Sauvegarde immédiate après ajout
+          localStorage.setItem("profile", JSON.stringify({ name, email, technos: newTechs, cvName, lmName }));
+          toast.success("Profil enregistré !");
+          return newTechs;
+        });
         if (!allTechOptions.includes(val)) setAllTechOptions([...allTechOptions, val]);
       }
       setTechInput("");
@@ -88,7 +93,13 @@ const Profile: React.FC = () => {
   };
 
   const handleRemoveTech = (tech: string) => {
-    setTechnos(technos.filter(t => t !== tech));
+    setTechnos(prev => {
+      const newTechs = prev.filter(t => t !== tech);
+      // Sauvegarde immédiate après suppression
+      localStorage.setItem("profile", JSON.stringify({ name, email, technos: newTechs, cvName, lmName }));
+      toast.success("Profil enregistré !");
+      return newTechs;
+    });
   };
 
   const uploadCvAndExtractSkills = async (file: File) => {
@@ -138,38 +149,39 @@ const Profile: React.FC = () => {
 
   const handleSave = () => {
     localStorage.setItem("profile", JSON.stringify({ name, email, technos, cvName, lmName }));
-    toast.success("Profil enregistré !");
     setTimeout(() => {
       navigate("/dashboard");
     }, 1200);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex">
-      <SidebarNav  />
-      <div className="flex-1 flex flex-col">
-        <TopNav  />
-        <div className="flex-1 flex items-center justify-center">
-          <Toaster position="top-center" />
-          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg flex flex-col gap-6 border-t-8 border-blue-400">
-            <div className="flex items-center gap-3 mb-2">
-              <UserCircleIcon className="h-8 w-8 text-blue-500" />
-              <h1 className="text-2xl font-bold text-blue-700">Mon profil</h1>
-            </div>
+  // Ajout d'une fonction pour gérer l'enregistrement sur Entrée
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSave();
+    }
+  };
 
-            <div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex flex-col">
+      <div className="flex-1 flex items-center justify-center">
+        <Toaster position="top-center" />
+        <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg flex flex-col gap-6 border-t-8 border-blue-400">
+          <div className="flex items-center gap-3 mb-2">
+            <UserCircleIcon className="h-8 w-8 text-blue-500" />
+            <h1 className="text-2xl font-bold text-blue-700">Mon profil</h1>
               <label className="block font-medium mb-1">Nom</label>
-              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200" value={name} onChange={e => setName(e.target.value)} />
+              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200 text-gray-900" value={name} onChange={e => setName(e.target.value)} onKeyDown={handleInputKeyDown} />
             </div>
 
             <div>
               <label className="block font-medium mb-1">Email</label>
-              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200" value={email} onChange={e => setEmail(e.target.value)} />
+              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200 text-gray-900" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={handleInputKeyDown} />
             </div>
 
             <div>
               <label className="block font-medium mb-1">Métier visé</label>
-              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200" value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="Ex: dev front, data analyst..." />
+              <input className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-200 text-gray-900" value={jobTitle} onChange={e => setJobTitle(e.target.value)} placeholder="Ex: dev front, data analyst..." onKeyDown={handleInputKeyDown} />
             </div>
 
             <div>
@@ -187,7 +199,7 @@ const Profile: React.FC = () => {
                   </span>
                 ))}
               </div>
-              <input className="border rounded px-3 py-2 w-full mt-2 focus:ring-2 focus:ring-blue-200" placeholder="Ajoutez une compétence et appuyez sur Entrée" value={techInput} onChange={e => setTechInput(e.target.value)} onKeyDown={handleTechInputKeyDown} />
+              <input className="border rounded px-3 py-2 w-full mt-2 focus:ring-2 focus:ring-blue-200 text-gray-900" placeholder="Ajoutez une compétence et appuyez sur Entrée" value={techInput} onChange={e => setTechInput(e.target.value)} onKeyDown={handleTechInputKeyDown} />
             </div>
 
             {/* CV Upload */}
@@ -254,7 +266,6 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

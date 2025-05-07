@@ -5,6 +5,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Vérifie l'état de connexion
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
+
   const navigation = [
     { name: 'Accueil', href: '/' },
     { name: 'Fonctionnalités', href: '/features' },
@@ -33,12 +36,40 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link
-              to="/login"
-              className="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-600 transition-colors"
-            >
-              Connexion
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-600 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to="/profile"
+                  className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-600 transition-colors"
+                >
+                  Mon profil
+                </Link>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userName");
+                    localStorage.removeItem("userEmail");
+                    window.location.href = "/";
+                  }}
+                  className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-400 hover:bg-purple-600 transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-600 transition-colors"
+              >
+                Connexion
+              </Link>
+            )}
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button

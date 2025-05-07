@@ -1,57 +1,35 @@
-import { UserCircleIcon, HomeIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
-import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { BriefcaseIcon, UserCircleIcon, Cog6ToothIcon, HomeIcon } from "@heroicons/react/24/solid";
+
+const navItems = [
+  { name: "Dashboard", to: "/dashboard", icon: <HomeIcon className="h-5 w-5" /> },
+  { name: "Profil", to: "/profile", icon: <UserCircleIcon className="h-5 w-5" /> },
+  { name: "Paramètres", to: "/settings", icon: <Cog6ToothIcon className="h-5 w-5" /> },
+];
 
 const SidebarNav: React.FC = () => {
   const location = useLocation();
-  const [userName, setUserName] = useState<string>('Utilisateur');
-
-  useEffect(() => {
-    setUserName(localStorage.getItem('userName') || 'Utilisateur');
-  }, []);
-
-  const navItems = [
-    { label: 'Tableau de bord', to: '/dashboard', icon: <HomeIcon className="h-5 w-5 mr-2" /> },
-    { label: 'Profil', to: '/profile', icon: <UserCircleIcon className="h-5 w-5 mr-2" /> },
-    { label: 'Paramètres', to: '/settings', icon: <Cog6ToothIcon className="h-5 w-5 mr-2" /> },
-  ];
-
   return (
-    <div className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-slate-100 flex flex-col min-h-screen shadow-xl border-r border-slate-700">
-      <div className="p-6 text-center border-b border-slate-700">
-        <h1 className="text-2xl font-bold tracking-wide text-white">Fyndra</h1>
-        <p className="text-sm mt-2 text-slate-300 font-medium">
-          👋 Bienvenue, <span className="text-white font-semibold">{userName}</span>
-        </p>
+    <aside className="bg-white shadow-lg h-full w-56 flex flex-col py-6 px-3 border-r border-blue-100">
+      <div className="mb-8 flex items-center gap-2 px-2">
+        <BriefcaseIcon className="h-7 w-7 text-blue-600" />
+        <span className="text-xl font-bold text-blue-700">Fyndra</span>
       </div>
-
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex flex-col gap-2">
         {navItems.map((item) => (
           <Link
-            key={item.to}
+            key={item.name}
             to={item.to}
-            className={`flex items-center px-4 py-2 rounded transition-colors text-base font-medium ${
-              location.pathname === item.to
-                ? 'bg-blue-600 text-white font-semibold'
-                : 'text-slate-400 hover:bg-slate-700 hover:text-white'
-            }`}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-colors ${location.pathname === item.to ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-blue-50"}`}
           >
-            <span className="mr-3">{item.icon}</span>
-            {item.label}
+            {item.icon}
+            {item.name}
           </Link>
         ))}
       </nav>
-
-      <button
-        onClick={() => {
-          localStorage.removeItem('userName');
-          window.location.href = '/login';
-        }}
-        className="m-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition font-semibold text-base shadow"
-      >
-        🚪 Déconnexion
-      </button>
-    </div>
+      <div className="mt-auto text-xs text-gray-400 px-2 pt-8">© 2025 Fyndra</div>
+    </aside>
   );
 };
 

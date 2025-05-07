@@ -2,28 +2,36 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>JobScan</title>
+  <title>Fyndra</title>
   <style>
     /* Ajoute ici tes styles ou importe styles.scss via Vite si besoin */
   </style>
 </head>
-<body>
-  <h1>JobScan</h1>
-  <div class="message">
-    Analysez cette offre d'emploi pour détecter les red flags potentiels.
-  </div>
-  <div id="login-section">
-    <form id="login-form">
-      <input type="email" id="login-email" placeholder="Email" required style="margin-bottom:6px;display:block;width:100%" />
-      <input type="password" id="login-password" placeholder="Mot de passe" required style="margin-bottom:6px;display:block;width:100%" />
-      <button type="submit" class="button" style="width:100%">Se connecter</button>
-    </form>
-    <div id="login-status" style="margin-top:8px;font-size:13px;"></div>
-  </div>
-  <button class="button" id="analyze-btn">Analyser cette page</button>
-  <div id="analysis-results" class="hidden">
-    <div id="alerts-container"></div>
-  </div>
+<body class="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 min-w-[340px] min-h-[420px] font-sans">
+  <header class="flex items-center justify-between px-4 py-3 bg-white shadow rounded-t-xl">
+    <div class="flex items-center gap-2">
+      <img src="../assets/icons/icon128.png" alt="Fyndra" class="h-8 w-8 rounded-full" />
+      <span class="text-xl font-bold text-blue-700">Fyndra</span>
+    </div>
+    <div id="user-info" class="text-sm text-gray-600"></div>
+  </header>
+  <main class="p-4 flex flex-col gap-4">
+    <div id="login-section" class="bg-white rounded-xl shadow p-4 flex flex-col gap-2">
+      <form id="login-form" class="flex flex-col gap-2">
+        <input type="email" id="login-email" placeholder="Email" required class="border rounded px-3 py-2 w-full" />
+        <input type="password" id="login-password" placeholder="Mot de passe" required class="border rounded px-3 py-2 w-full" />
+        <button type="submit" class="bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition">Se connecter</button>
+      </form>
+      <div id="login-status" class="text-xs mt-1"></div>
+    </div>
+    <div id="analyze-section" class="bg-white rounded-xl shadow p-4 flex flex-col gap-2">
+      <button class="bg-purple-600 text-white rounded px-4 py-2 font-semibold hover:bg-purple-700 transition" id="analyze-btn">Analyser cette page</button>
+      <div id="analysis-results" class="hidden mt-2">
+        <div id="alerts-container"></div>
+      </div>
+    </div>
+    <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded shadow-lg z-50"></div>
+  </main>
   <script type="module" src="index.ts"></script>
 </body>
 </html>

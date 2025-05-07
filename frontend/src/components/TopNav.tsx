@@ -1,19 +1,13 @@
-import { UserCircleIcon } from '@heroicons/react/24/solid';
-import { useEffect, useState } from 'react';
+import React from "react";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 
-const TopNav: React.FC = () => {
-  const [userName, setUserName] = useState<string>('Utilisateur');
-
-  useEffect(() => {
-    setUserName(localStorage.getItem('userName') || 'Utilisateur');
-  }, []);
-
+const TopNav: React.FC<{ userName?: string }> = ({ userName }) => {
   return (
-    <header className="flex items-center justify-between p-8 bg-white/80 shadow-sm border-b border-blue-100">
-      <h1 className="text-3xl font-bold text-blue-700 tracking-tight">Fyndra</h1>
-      <div className="flex items-center gap-4">
-        <span className="hidden md:inline text-blue-900 font-medium">Bienvenue, {userName} !</span>
-        <UserCircleIcon className="h-8 w-8 text-blue-500 md:hidden" />
+    <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b border-blue-100">
+      <h1 className="text-2xl font-bold text-blue-700">Dashboard</h1>
+      <div className="flex items-center gap-2">
+        <UserCircleIcon className="h-7 w-7 text-blue-500" />
+        <span className="font-medium text-gray-700">{userName || "Utilisateur"}</span>
       </div>
     </header>
   );

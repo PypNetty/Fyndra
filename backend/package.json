@@ -18,6 +18,8 @@
     "@types/jsonwebtoken": "^9.0.9",
     "fastify": "^4.29.0",
     "jsonwebtoken": "^9.0.2",
+    "pdf-img-convert": "^2.0.0",
+    "pdf2json": "^3.1.5",
     "pdfjs-dist": "^5.1.91",
     "pino": "^8.15.0",
     "sqlite3": "^5.1.7",
@@ -28,9 +30,9 @@
   "devDependencies": {
     "@types/busboy": "^1.5.4",
     "@types/node": "^20.11.0",
-    "tsx": "^4.1.1",
-    "typescript": "^5.3.3",
     "eslint": "^8.56.0",
-    "prettier": "^3.2.4"
+    "prettier": "^3.2.4",
+    "tsx": "^4.1.1",
+    "typescript": "^5.3.3"
   }
 }

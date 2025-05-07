@@ -18,7 +18,8 @@ declare namespace chrome {
 }
 
 // Définitions pour les modules partagés
-declare module "@jobscan/shared" {
+// Si le module partagé change de nom, remplacer aussi ici.
+declare module '@jobscan/shared' {
   export interface Alert {
     id: string;
     title: string;

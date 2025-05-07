@@ -50,7 +50,7 @@ const Login: React.FC = () => {
             <input
               type="email"
               placeholder="Votre email"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
             <input
               type="password"
               placeholder="Votre mot de passe"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required

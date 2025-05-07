@@ -1,7 +1,9 @@
-import type { Alert } from "@jobscan/shared";
+import type { Alert } from '@fyndra/shared';
+
+// Si le package partagé change de nom, remplacer aussi ici.
 
 export function highlightIssues(document: Document, alerts: Alert[]): void {
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   container.style.cssText = `
     position: fixed;
     top: 20px;
@@ -17,8 +19,8 @@ export function highlightIssues(document: Document, alerts: Alert[]): void {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   `;
 
-  const title = document.createElement("h2");
-  title.textContent = "JobScan - Analyse";
+  const title = document.createElement('h2');
+  title.textContent = 'Fyndra - Analyse';
   title.style.cssText = `
     margin: 0 0 16px 0;
     font-size: 18px;
@@ -28,8 +30,8 @@ export function highlightIssues(document: Document, alerts: Alert[]): void {
     justify-content: space-between;
   `;
 
-  const closeButton = document.createElement("button");
-  closeButton.textContent = "×";
+  const closeButton = document.createElement('button');
+  closeButton.textContent = '×';
   closeButton.style.cssText = `
     background: none;
     border: none;
@@ -45,14 +47,14 @@ export function highlightIssues(document: Document, alerts: Alert[]): void {
   container.appendChild(title);
 
   if (alerts.length === 0) {
-    const noIssue = document.createElement("p");
-    noIssue.textContent = "Aucun problème détecté dans cette offre.";
-    noIssue.style.color = "#4CAF50";
+    const noIssue = document.createElement('p');
+    noIssue.textContent = 'Aucun problème détecté dans cette offre.';
+    noIssue.style.color = '#4CAF50';
     container.appendChild(noIssue);
   } else {
     alerts.forEach((alert) => {
-      const alertDiv = document.createElement("div");
-      alertDiv.style.marginBottom = "12px";
+      const alertDiv = document.createElement('div');
+      alertDiv.style.marginBottom = '12px';
       alertDiv.innerHTML = `<strong>${alert.title}</strong><br>${alert.description}`;
       container.appendChild(alertDiv);
     });
