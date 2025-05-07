@@ -103,7 +103,7 @@ const Profile: React.FC = () => {
       return;
     }
     const data = await res.json();
-    console.log("[JobScan] Réponse backend upload-cv:", data);
+    console.log("[Fyndra] Réponse backend upload-cv:", data);
     if (data.skills?.length > 0) {
       setTechnos(data.skills);
       toast.success(`${data.skills.length} compétences détectées depuis le CV`);

@@ -1,0 +1,37 @@
+{
+  "typescript": "^5.3.3",
+  "pnpm": "^9.1.1",
+  "node": ">=20.0.0",
+  "dependencies": {
+    "backend": {
+      "@fastify/cors": "^8.5.0",
+      "@fastify/multipart": "^7.7.3",
+      "@prisma/client": "^6.6.0",
+      "fastify": "^4.29.0",
+      "jsonwebtoken": "^9.0.2",
+      "pdfjs-dist": "^5.1.91",
+      "pino": "^8.15.0",
+      "sqlite3": "^5.1.7",
+      "tesseract.js": "^6.0.1",
+      "vite": "^5.0.12"
+    },
+    "frontend": {
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "@tanstack/react-query": "^5.17.16",
+      "react-router-dom": "^6.21.3",
+      "tailwindcss": "^3.4.1",
+      "vite": "^5.0.12"
+    }
+  },
+  "devDependencies": {
+    "tsx": "^4.1.1",
+    "typescript": "^5.3.3",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.3.10",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4"
+  }
+}

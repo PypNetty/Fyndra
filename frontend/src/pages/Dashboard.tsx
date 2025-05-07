@@ -285,7 +285,7 @@ const Dashboard: React.FC = () => {
         )}
 
         <footer className="mt-auto p-6 text-sm text-center text-gray-500 bg-white/80">
-          © 2025 JobScan — Tous droits réservés.
+          © 2025 Fyndra — Tous droits réservés.
         </footer>
       </div>
     </div>

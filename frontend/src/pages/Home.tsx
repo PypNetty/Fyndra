@@ -26,7 +26,7 @@ const Home: React.FC = () => (
     <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
       <div className="flex items-center gap-2">
         <UserCircleIcon className="h-6 w-6 text-blue-600" />
-        <span className="text-lg font-bold text-blue-700">JobScan</span>
+        <span className="text-lg font-bold text-blue-700">Fyndra</span>
       </div>
       <nav className="flex gap-4 text-sm text-blue-700 font-medium">
         <Link to="/login" className="hover:underline">Se connecter</Link>
@@ -41,7 +41,7 @@ const Home: React.FC = () => (
           Analysez vos offres d'emploi<br />et protégez vos droits
         </h1>
         <p className="text-gray-700 mb-8 text-lg">
-          JobScan vous aide à décoder les offres, détecter les pièges et booster vos candidatures grâce à l'IA.
+          Fyndra vous aide à décoder les offres, détecter les pièges et booster vos candidatures grâce à l'IA.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-sm mx-auto">
           <Link
@@ -70,7 +70,7 @@ const Home: React.FC = () => (
     {/* Features Section */}
     <section className="py-16 bg-white px-6">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-blue-900 mb-10">Pourquoi choisir JobScan ?</h2>
+        <h2 className="text-3xl font-bold text-center text-blue-900 mb-10">Pourquoi choisir Fyndra ?</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((f, idx) => (
             <div key={idx} className="bg-gray-50 shadow rounded-xl p-6 text-center">
@@ -85,7 +85,7 @@ const Home: React.FC = () => (
 
     {/* Footer */}
     <footer className="py-6 text-sm text-center text-gray-500 bg-gray-100 mt-auto">
-      © 2025 JobScan — Analyse intelligente d'offres d'emploi. Tous droits réservés.
+      © 2025 Fyndra — Analyse intelligente d'offres d'emploi. Tous droits réservés.
     </footer>
   </div>
 );

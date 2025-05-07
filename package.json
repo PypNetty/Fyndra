@@ -10,9 +10,30 @@
     "build:extension": "pnpm --filter @fyndra/extension build",
     "dev:all": "concurrently \"pnpm dev:shared\" \"pnpm dev:backend\" \"pnpm dev:frontend\"",
     "build:all": "pnpm --filter @fyndra/shared build && pnpm --filter @fyndra/backend build && pnpm --filter @fyndra/extension build && pnpm --filter @fyndra/frontend build",
-    "clean": "rm -rf node_modules && rm -rf */node_modules && rm -rf */dist"
+    "clean": "rimraf node_modules */node_modules */dist",
+    "audit": "pnpm audit",
+    "check": "pnpm outdated",
+    "sync": "pnpm sync",
+    "why": "pnpm why",
+    "why:all": "pnpm why --all",
+    "test": "pnpm --filter @fyndra/* test",
+    "test:coverage": "pnpm --filter @fyndra/* test --coverage",
+    "test:unit": "pnpm --filter @fyndra/* test --runInBand",
+    "test:integration": "pnpm --filter @fyndra/* test:integration",
+    "coverage": "nyc report --reporter=html --reporter=text-summary",
+    "coverage:check": "nyc check-coverage --statements 80 --branches 80 --functions 80 --lines 80"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.11.0",
+    "axios": "^1.9.0",
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "nyc": "^15.1.0",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.1"
   }
 }

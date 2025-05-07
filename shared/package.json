@@ -1,5 +1,5 @@
 {
-  "name": "@jobscan/shared",
+  "name": "@fyndra/shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -7,9 +7,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,js}\""
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4"
   }
 }

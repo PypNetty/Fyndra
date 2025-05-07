@@ -1,10 +1,150 @@
+# Dependencies
 node_modules/
+.pnpm-store/
+
+# Build outputs
 dist/
 build/
+*.tsbuildinfo
+*.js.map
+
+# Environment
 .env
 .env.local
-.DS_Store
-*.log
-coverage/
+.env.*.local
+
+# IDE
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+__tests__/
+__mocks__/
+
+# TypeScript
+dist/
+*.tsbuildinfo
+
+# Debug
+*.debug
+*.debug.js
+
+# Cache
+.cache/
+next-env.d.ts
+
+# Local development
+.env.local
+.env.*.local
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Editor
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Debug
+*.debug
+*.debug.js
+
+# System
+.DS_Store
+Thumbs.db
+
+# Testing
+__tests__/
+__mocks__/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+next-env.d.ts
+
+# Local development
+.env.local
+.env.*.local
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Editor
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Debug
+*.debug
+*.debug.js
+
+# System
+.DS_Store
+Thumbs.db
+
+# Testing
+__tests__/
+__mocks__/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+next-env.d.ts
+
+# Local development
+.env.local
+.env.*.local
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Editor
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Debug
+*.debug
+*.debug.js
+
+# System
+.DS_Store
+Thumbs.db

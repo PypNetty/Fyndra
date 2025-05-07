@@ -19,7 +19,7 @@ const SidebarNav: React.FC = () => {
   return (
     <div className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-slate-100 flex flex-col min-h-screen shadow-xl border-r border-slate-700">
       <div className="p-6 text-center border-b border-slate-700">
-        <h1 className="text-2xl font-bold tracking-wide text-white">JobScan</h1>
+        <h1 className="text-2xl font-bold tracking-wide text-white">Fyndra</h1>
         <p className="text-sm mt-2 text-slate-300 font-medium">
           👋 Bienvenue, <span className="text-white font-semibold">{userName}</span>
         </p>

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #111827;
+    color: white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover {
+    background-color: #2563eb;
+  }
+  .card {
+    padding: 1.5rem;
+    background: linear-gradient(90deg, #1e40af, #075985);
+    border-radius: 0.75rem;
+  }
+}
