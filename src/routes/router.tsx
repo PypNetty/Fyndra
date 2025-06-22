@@ -7,6 +7,7 @@ import { DemoPage } from "../features/demo";
 import { CoursePage } from "../features/course";
 import { QuestionnairePage } from "../features/questionnaire";
 import { VMPage } from "../features/vm";
+import { LegalPage, PrivacyPage } from "../features/legal";
 
 const Router: React.FC = () => (
   <Routes>
@@ -22,6 +23,8 @@ const Router: React.FC = () => (
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/profile" element={<ProfilePage />} />
+    <Route path="/legal" element={<LegalPage />} />
+    <Route path="/privacy" element={<PrivacyPage />} />
     {/* Add other routes here */}
   </Routes>
 );
