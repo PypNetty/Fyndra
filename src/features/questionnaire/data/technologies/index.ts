@@ -21,11 +21,11 @@ export const technologyBasedData = {
 
 // Regroupement de toutes les questions pour compatibilité avec l'ancien système
 export const allQuestions = [
-  ...frontTechnologies.React.questionnaire,
-  ...backTechnologies["Node.js"].questionnaire,
-  ...cloudTechnologies.AWS.questionnaire,
-  ...infrastructureTechnologies.Docker.questionnaire,
-  ...infrastructureTechnologies.Terraform.questionnaire,
+  ...frontTechnologies.technologies.React.questionnaire,
+  ...backTechnologies.technologies["Node.js"].questionnaire,
+  ...cloudTechnologies.technologies.AWS.questionnaire,
+  ...infrastructureTechnologies.technologies.Docker.questionnaire,
+  ...infrastructureTechnologies.technologies.Terraform.questionnaire,
 ];
 
 // Configuration des catégories de technologies
@@ -35,27 +35,27 @@ export const technologyCategories: TechnologyCategory[] = [
     name: "Frontend",
     description: "Technologies et frameworks pour le développement frontend",
     icon: "🎨",
-    technologies: Object.keys(frontTechnologies),
+    technologies: Object.keys(frontTechnologies.technologies),
   },
   {
     id: "back",
     name: "Backend",
     description: "Technologies et frameworks pour le développement backend",
     icon: "⚙️",
-    technologies: Object.keys(backTechnologies),
+    technologies: Object.keys(backTechnologies.technologies),
   },
   {
     id: "cloud",
     name: "Cloud",
     description: "Plateformes et services cloud",
     icon: "☁️",
-    technologies: Object.keys(cloudTechnologies),
+    technologies: Object.keys(cloudTechnologies.technologies),
   },
   {
     id: "infrastructure",
     name: "Infrastructure",
     description: "Outils de conteneurisation et Infrastructure as Code",
     icon: "🏗️",
-    technologies: Object.keys(infrastructureTechnologies),
+    technologies: Object.keys(infrastructureTechnologies.technologies),
   },
 ];

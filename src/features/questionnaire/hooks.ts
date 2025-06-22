@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { technologyBasedData, TechnologyData } from "./data/technologies";
 
@@ -8,57 +7,47 @@ export const useQuestionnaire = (technologyKey?: string) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
-  const [technologyData, setTechnologyData] = useState<TechnologyData | null>(
-    null
-  );
+  const [questions, setQuestions] = useState<any[]>([]);
 
   useEffect(() => {
-    if (technologyKey && technologyBasedData[technologyKey]) {
-      setTechnologyData(technologyBasedData[technologyKey]);
+    if (technologyKey) {
+      // Rechercher la technologie dans toutes les catégories
+      let foundQuestions: any[] = [];
+
+      Object.values(technologyBasedData).forEach((category) => {
+        if (category.technologies[technologyKey]) {
+          foundQuestions =
+            category.technologies[technologyKey].questionnaire || [];
+        }
+      });
+
+      setQuestions(foundQuestions);
+      setCurrentQuestionIndex(0);
+      setAnswers({});
+      setIsCompleted(false);
+      setScore(0);
     }
   }, [technologyKey]);
 
-  const currentQuestion = technologyData?.questionnaire?.[currentQuestionIndex];
-  const totalQuestions = technologyData?.questionnaire?.length || 0;
-  const progress =
-    totalQuestions > 0
-      ? ((currentQuestionIndex + 1) / totalQuestions) * 100
-      : 0;
+  const submitAnswer = (questionId: string, answer: string) => {
+    const newAnswers = { ...answers, [questionId]: answer };
+    setAnswers(newAnswers);
 
-  const answerQuestion = (questionId: string, selectedAnswer: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: selectedAnswer,
-    }));
-  };
+    // Calculer le score
+    const currentQuestion = questions[currentQuestionIndex];
+    let newScore = score;
 
-  const nextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+    if (currentQuestion && currentQuestion.correctAnswer === answer) {
+      newScore = score + 1;
+      setScore(newScore);
+    }
+
+    // Passer à la question suivante ou terminer
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      completeQuestionnaire();
+      setIsCompleted(true);
     }
-  };
-
-  const previousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
-    }
-  };
-
-  const completeQuestionnaire = () => {
-    if (!technologyData?.questionnaire) return;
-
-    let correctAnswers = 0;
-    technologyData.questionnaire.forEach((question) => {
-      if (answers[question.id] === question.correctAnswer) {
-        correctAnswers++;
-      }
-    });
-
-    const finalScore = Math.round((correctAnswers / totalQuestions) * 100);
-    setScore(finalScore);
-    setIsCompleted(true);
   };
 
   const resetQuestionnaire = () => {
@@ -68,117 +57,161 @@ export const useQuestionnaire = (technologyKey?: string) => {
     setScore(0);
   };
 
+  const getScorePercentage = () => {
+    return questions.length > 0
+      ? Math.round((score / questions.length) * 100)
+      : 0;
+  };
+
   return {
-    // État
-    currentQuestion,
     currentQuestionIndex,
-    totalQuestions,
-    progress,
     answers,
     isCompleted,
     score,
-    technologyData,
-
-    // Actions
-    answerQuestion,
-    nextQuestion,
-    previousQuestion,
-    completeQuestionnaire,
+    questions,
+    currentQuestion: questions[currentQuestionIndex],
+    submitAnswer,
     resetQuestionnaire,
+    getScorePercentage,
+    totalQuestions: questions.length,
   };
 };
 
-// Hook pour gérer la sélection de technologies
-export const useTechnologySelection = () => {
-  const [selectedTechnology, setSelectedTechnology] = useState<string | null>(
+// Hook pour récupérer les données d'une technologie spécifique
+export const useTechnology = (
+  categoryName?: string,
+  technologyKey?: string
+) => {
+  const [technologyData, setTechnologyData] = useState<TechnologyData | null>(
     null
   );
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const selectTechnology = (technologyKey: string, categoryKey: string) => {
-    setSelectedTechnology(technologyKey);
-    setSelectedCategory(categoryKey);
-  };
+  useEffect(() => {
+    if (categoryName && technologyKey) {
+      setIsLoading(true);
 
-  const clearSelection = () => {
-    setSelectedTechnology(null);
-    setSelectedCategory(null);
-  };
+      // Rechercher dans les données
+      const category = technologyBasedData[categoryName];
+      if (category && category.technologies[technologyKey]) {
+        setTechnologyData(category.technologies[technologyKey]);
+      } else {
+        setTechnologyData(null);
+      }
 
-  return {
-    selectedTechnology,
-    selectedCategory,
-    selectTechnology,
-    clearSelection,
-  };
-};
-
-// Hook pour gérer l'état des modales
-export const useModal = (initialState = false) => {
-  const [isOpen, setIsOpen] = useState(initialState);
-
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-  const toggleModal = () => setIsOpen((prev) => !prev);
+      setIsLoading(false);
+    }
+  }, [categoryName, technologyKey]);
 
   return {
-    isOpen,
-    openModal,
-    closeModal,
-    toggleModal,
+    technologyData,
+    isLoading,
   };
 };
 
 // Hook pour gérer les statistiques utilisateur
 export const useUserStats = () => {
-  const [completedQuestionnaires, setCompletedQuestionnaires] = useState<
-    Record<string, number>
-  >({});
+  const [completedTests, setCompletedTests] = useState<Record<string, number>>(
+    {}
+  );
   const [totalScore, setTotalScore] = useState(0);
-  const [averageScore, setAverageScore] = useState(0);
 
-  const addQuestionnaireResult = (technologyKey: string, score: number) => {
-    setCompletedQuestionnaires((prev) => ({
-      ...prev,
-      [technologyKey]: score,
-    }));
+  const addTestResult = (technologyKey: string, score: number) => {
+    const newCompletedTests = { ...completedTests, [technologyKey]: score };
+    setCompletedTests(newCompletedTests);
 
-    // Recalculer les statistiques
-    const scores = Object.values({
-      ...completedQuestionnaires,
-      [technologyKey]: score,
-    });
-    const total = scores.reduce((sum, score) => sum + score, 0);
-    const average = scores.length > 0 ? total / scores.length : 0;
-
+    // Calculer le score total
+    const total = Object.values(newCompletedTests).reduce(
+      (sum, score) => sum + score,
+      0
+    );
     setTotalScore(total);
-    setAverageScore(Math.round(average));
-  };
 
-  const getCompletedCount = () => Object.keys(completedQuestionnaires).length;
-
-  const getTechnologyScore = (technologyKey: string) =>
-    completedQuestionnaires[technologyKey];
-
-  const getBestTechnology = () => {
-    const entries = Object.entries(completedQuestionnaires);
-    if (entries.length === 0) return null;
-
-    return entries.reduce((best, current) =>
-      current[1] > best[1] ? current : best
+    // Sauvegarder dans le localStorage (optionnel)
+    localStorage.setItem(
+      "fyndra_user_stats",
+      JSON.stringify({
+        completedTests: newCompletedTests,
+        totalScore: total,
+      })
     );
   };
 
+  const loadStats = () => {
+    try {
+      const saved = localStorage.getItem("fyndra_user_stats");
+      if (saved) {
+        const { completedTests: saved_tests, totalScore: saved_total } =
+          JSON.parse(saved);
+        setCompletedTests(saved_tests || {});
+        setTotalScore(saved_total || 0);
+      }
+    } catch (error) {
+      console.warn("Erreur lors du chargement des statistiques:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
   return {
-    completedQuestionnaires,
+    completedTests,
     totalScore,
-    averageScore,
-    addQuestionnaireResult,
-    getCompletedCount,
-    getTechnologyScore,
-    getBestTechnology,
+    addTestResult,
+    totalTestsCompleted: Object.keys(completedTests).length,
   };
 };
-=======
-// Custom hooks for questionnaire/cards system
->>>>>>> a7da3b8f7bf63ffdfde2337e37b1c39bccb76220
+
+// Hook pour la navigation et l'état des cartes
+export const useCardNavigation = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTechnology, setSelectedTechnology] = useState<string | null>(
+    null
+  );
+
+  const selectCategory = (categoryName: string) => {
+    setSelectedCategory(categoryName);
+    setSelectedTechnology(null);
+  };
+
+  const selectTechnology = (technologyKey: string) => {
+    setSelectedTechnology(technologyKey);
+  };
+
+  const resetSelection = () => {
+    setSelectedCategory(null);
+    setSelectedTechnology(null);
+  };
+
+  return {
+    selectedCategory,
+    selectedTechnology,
+    selectCategory,
+    selectTechnology,
+    resetSelection,
+  };
+};
+
+// Hook pour gérer l'état des modales et overlays
+export const useModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalType, setModalType] = useState<string | null>(null);
+
+  const openModal = (type?: string) => {
+    setModalType(type || null);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setModalType(null);
+  };
+
+  return {
+    isOpen,
+    modalType,
+    openModal,
+    closeModal,
+  };
+};

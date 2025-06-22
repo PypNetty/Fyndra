@@ -1,12 +1,17 @@
 import { nodejsQuestions, nodejsCourses, nodejsVMs } from "./Node.js";
 
 export const backTechnologies = {
-  "Node.js": {
-    name: "Node.js",
-    description: "Runtime JavaScript côté serveur",
-    questionnaire: nodejsQuestions,
-    cours: nodejsCourses,
-    vm: nodejsVMs,
+  name: "Backend",
+  description: "Technologies et frameworks pour le développement backend",
+  technologies: {
+    "Node.js": {
+      name: "Node.js",
+      description: "Runtime JavaScript côté serveur",
+      difficulty: "Intermédiaire",
+      questionnaire: nodejsQuestions,
+      cours: nodejsCourses,
+      vm: nodejsVMs,
+    },
+    // Python: ... (à ajouter plus tard)
   },
-  // Python: ... (à ajouter plus tard)
 };
