@@ -431,7 +431,7 @@ const LandingPage = () => {
               <h3 className="text-2xl font-bold text-white mb-4">En résumé</h3>
               <p className="text-white/80 text-lg leading-relaxed">
                 Fyndra, c'est la plateforme qui relie formation, pratique et
-                emploi, sans bullshit. Elle montre ce que tu sais faire — pas
+                emploi, sans bullshit. Elle montre ce que tu sais faire, pas
                 juste ce que tu dis savoir.
               </p>
               <div className="mt-6">
