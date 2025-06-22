@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -195,5 +196,13 @@ const CardList: React.FC = () => {
     </div>
   );
 };
+=======
+
+const CardList: React.FC = () => (
+  <div>
+    {/* List of cards will go here */}
+  </div>
+);
+>>>>>>> a7da3b8f7bf63ffdfde2337e37b1c39bccb76220
 
 export default CardList;

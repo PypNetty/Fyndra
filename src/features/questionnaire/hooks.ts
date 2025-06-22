@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { technologyBasedData, TechnologyData } from "./data/technologies";
 
@@ -178,3 +179,6 @@ export const useUserStats = () => {
     getBestTechnology,
   };
 };
+=======
+// Custom hooks for questionnaire/cards system
+>>>>>>> a7da3b8f7bf63ffdfde2337e37b1c39bccb76220

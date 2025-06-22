@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
@@ -410,5 +411,15 @@ const QuestionnairePage: React.FC = () => {
     </div>
   );
 };
+=======
+import React from "react";
+
+const QuestionnairePage: React.FC = () => (
+  <div>
+    <h2>Questionnaire</h2>
+    {/* Card system logic will go here */}
+  </div>
+);
+>>>>>>> a7da3b8f7bf63ffdfde2337e37b1c39bccb76220
 
 export default QuestionnairePage;
