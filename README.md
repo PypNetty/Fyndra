@@ -83,14 +83,6 @@ pnpm build      # Build de production
 pnpm preview    # Aperçu du build
 ```
 
-### Contribution
-
-1. Fork le projet
-2. Créez votre branche (`git checkout -b feature/amazing-feature`)
-3. Committez vos changements (`git commit -m 'Add amazing feature'`)
-4. Push vers la branche (`git push origin feature/amazing-feature`)
-5. Ouvrez une Pull Request
-
 ## 🌟 Roadmap
 
 - [ ] **Phase 1**: MVP avec évaluations de base
@@ -103,11 +95,17 @@ pnpm preview    # Aperçu du build
 
 - **Email**: contact@fyndra.io
 - **LinkedIn**: [Fyndra](https://linkedin.com/company/fyndra)
-- **Website**: [fyndra.io](https://fyndra.io)
+- **Website**: [fyndra.me](https://fyndra.me)
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+**⚠️ Ce projet est protégé par copyright.**
+
+Copyright © 2025 PypNetty. Tous droits réservés.
+
+Ce logiciel et sa documentation sont propriétaires et confidentiels. Toute copie, distribution, modification ou utilisation non autorisée est strictement interdite.
+
+**Pour toute demande d'utilisation commerciale ou de licence, contactez : contact@fyndra.io**
 
 ---
 
