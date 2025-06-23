@@ -18,12 +18,13 @@ import {
 } from "lucide-react";
 import CardList from "./CardList";
 import { technologyBasedData } from "./data/technologies";
-import { useAuthStore } from "../../lib/zustand";
+import { useAuthStore, useProgressStore } from "../../lib/zustand";
 
 const QuestionnairePage: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
+  const { addCompletedQuiz, addBadge } = useProgressStore();
   const [showMissionInfo, setShowMissionInfo] = useState(false);
   const [showSampleReport, setShowSampleReport] = useState(false);
 
@@ -109,6 +110,23 @@ const QuestionnairePage: React.FC = () => {
 
     if (showResults) {
       const score = calculateScore();
+
+      // Sauvegarder le résultat du quiz
+      React.useEffect(() => {
+        if (technology) {
+          addCompletedQuiz(technology, score.percentage);
+
+          // Attribuer des badges selon le score
+          if (score.percentage >= 90) {
+            addBadge(`Expert ${technology}`);
+          } else if (score.percentage >= 75) {
+            addBadge(`Avancé ${technology}`);
+          } else if (score.percentage >= 50) {
+            addBadge(`Intermédiaire ${technology}`);
+          }
+        }
+      }, [score.percentage, technology, addCompletedQuiz, addBadge]);
+
       return (
         <div className="min-h-screen bg-[#010116] text-white">
           <nav className="border-b border-white/10 bg-[#010116]/80 backdrop-blur-sm">

@@ -1,8 +1,9 @@
 import { sécuritéQuestions, sécuritéCourses, sécuritéVMs } from "./Sécurité";
 
-export const techInfoTechnologies = {
-  name: "Tech Info",
-  description: "Technologies de l'information et cybersécurité",
+export const cybersécuritéTechnologies = {
+  name: "Cybersécurité",
+  description:
+    "Sécurité informatique, cryptographie et protection des systèmes",
   technologies: {
     Sécurité: {
       name: "Sécurité Informatique",

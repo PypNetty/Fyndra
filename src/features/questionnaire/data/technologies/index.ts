@@ -2,7 +2,7 @@ import { frontTechnologies } from "./Front";
 import { backTechnologies } from "./Back";
 import { cloudTechnologies } from "./Cloud";
 import { infrastructureTechnologies } from "./Infrastructure";
-import { techInfoTechnologies } from "./TechInfo";
+import { cybersécuritéTechnologies } from "./TechInfo";
 import { systèmeTechnologies } from "./Système";
 import { réseauxTechnologies } from "./Réseaux";
 import { TechnologyCategory } from "../../types";
@@ -26,7 +26,7 @@ export const technologyBasedData = {
   Back: backTechnologies,
   Cloud: cloudTechnologies,
   Infrastructure: infrastructureTechnologies,
-  "Tech Info": techInfoTechnologies,
+  Cybersécurité: cybersécuritéTechnologies,
   Système: systèmeTechnologies,
   Réseaux: réseauxTechnologies,
 };
@@ -41,7 +41,7 @@ export const allQuestions = [
   ...cloudTechnologies.technologies.Azure.questionnaire,
   ...infrastructureTechnologies.technologies.Docker.questionnaire,
   ...infrastructureTechnologies.technologies.Terraform.questionnaire,
-  ...techInfoTechnologies.technologies["Sécurité"].questionnaire,
+  ...cybersécuritéTechnologies.technologies["Sécurité"].questionnaire,
   ...systèmeTechnologies.technologies["Linux"].questionnaire,
   ...réseauxTechnologies.technologies["TCP-IP"].questionnaire,
 ];
@@ -77,11 +77,12 @@ export const technologyCategories: TechnologyCategory[] = [
     technologies: Object.keys(infrastructureTechnologies.technologies),
   },
   {
-    id: "techinfo",
-    name: "Tech Info",
-    description: "Technologies de l'information et cybersécurité",
+    id: "cybersécurité",
+    name: "Cybersécurité",
+    description:
+      "Sécurité informatique, cryptographie et protection des systèmes",
     icon: "🔒",
-    technologies: Object.keys(techInfoTechnologies.technologies),
+    technologies: Object.keys(cybersécuritéTechnologies.technologies),
   },
   {
     id: "système",

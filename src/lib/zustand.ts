@@ -29,3 +29,75 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
+interface UserProgress {
+  selectedPath?: string;
+  showAllDomains: boolean;
+  completedQuizzes: Record<string, number>; // technology -> score
+  badges: string[];
+}
+
+interface ProgressState {
+  progress: UserProgress;
+  setSelectedPath: (pathId: string | null) => void;
+  toggleShowAllDomains: () => void;
+  addCompletedQuiz: (technology: string, score: number) => void;
+  addBadge: (badge: string) => void;
+  resetProgress: () => void;
+}
+
+export const useProgressStore = create<ProgressState>()(
+  persist(
+    (set, get) => ({
+      progress: {
+        selectedPath: undefined,
+        showAllDomains: false,
+        completedQuizzes: {},
+        badges: [],
+      },
+      setSelectedPath: (pathId: string | null) =>
+        set((state) => ({
+          progress: {
+            ...state.progress,
+            selectedPath: pathId || undefined,
+          },
+        })),
+      toggleShowAllDomains: () =>
+        set((state) => ({
+          progress: {
+            ...state.progress,
+            showAllDomains: !state.progress.showAllDomains,
+          },
+        })),
+      addCompletedQuiz: (technology: string, score: number) =>
+        set((state) => ({
+          progress: {
+            ...state.progress,
+            completedQuizzes: {
+              ...state.progress.completedQuizzes,
+              [technology]: score,
+            },
+          },
+        })),
+      addBadge: (badge: string) =>
+        set((state) => ({
+          progress: {
+            ...state.progress,
+            badges: [...state.progress.badges, badge],
+          },
+        })),
+      resetProgress: () =>
+        set({
+          progress: {
+            selectedPath: undefined,
+            showAllDomains: false,
+            completedQuizzes: {},
+            badges: [],
+          },
+        }),
+    }),
+    {
+      name: "progress-storage",
+    }
+  )
+);

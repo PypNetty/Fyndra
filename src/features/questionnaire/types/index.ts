@@ -46,3 +46,20 @@ export interface Technology {
 export interface TechnologyData {
   [key: string]: Technology;
 }
+
+// Types pour les parcours personnalisés
+export interface UserPath {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  categories: string[];
+  color: string;
+}
+
+export interface UserProgress {
+  selectedPath?: string;
+  showAllDomains: boolean;
+  completedQuizzes: Record<string, number>; // technology -> score
+  badges: string[];
+}

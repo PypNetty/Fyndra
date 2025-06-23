@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,13 +15,60 @@ import {
   Shield,
   Terminal,
   Wifi,
+  Eye,
+  EyeOff,
+  Settings,
+  Star,
+  Award,
 } from "lucide-react";
 import { technologyBasedData } from "./data/technologies";
+import { useProgressStore } from "../../lib/zustand";
+import { PathSelector, AVAILABLE_PATHS } from "./PathSelector";
 
 const CardList: React.FC = () => {
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showPathSelector, setShowPathSelector] = useState(false);
+
+  const { progress, setSelectedPath, toggleShowAllDomains, addCompletedQuiz } =
+    useProgressStore();
+
+  // Afficher le sélecteur de parcours au premier chargement si aucun parcours n'est sélectionné
+  useEffect(() => {
+    if (!progress.selectedPath) {
+      setShowPathSelector(true);
+    }
+  }, [progress.selectedPath]);
+
+  // Obtenir les catégories autorisées selon le parcours sélectionné
+  const getAllowedCategories = () => {
+    if (progress.showAllDomains) {
+      return Object.keys(technologyBasedData);
+    }
+
+    if (!progress.selectedPath) {
+      return Object.keys(technologyBasedData);
+    }
+
+    const selectedPathData = AVAILABLE_PATHS.find(
+      (p) => p.id === progress.selectedPath
+    );
+    return selectedPathData?.categories || Object.keys(technologyBasedData);
+  };
+
+  const allowedCategories = getAllowedCategories();
+  const filteredCategories = Object.entries(technologyBasedData).filter(
+    ([categoryName]) => allowedCategories.includes(categoryName)
+  );
+
+  // Obtenir le nom du parcours actuel
+  const getCurrentPathName = () => {
+    const currentPath = AVAILABLE_PATHS.find(
+      (p) => p.id === progress.selectedPath
+    );
+    return currentPath?.name || "Tous les domaines";
+  };
 
   // Mapping des icônes pour chaque catégorie
   const categoryIcons: Record<string, React.ComponentType<any>> = {
@@ -29,7 +76,7 @@ const CardList: React.FC = () => {
     Back: Server,
     Cloud: Cloud,
     Infrastructure: Database,
-    "Tech Info": Shield,
+    Cybersécurité: Shield,
     Système: Terminal,
     Réseaux: Wifi,
   };
@@ -40,6 +87,9 @@ const CardList: React.FC = () => {
     Back: "from-green-500 to-emerald-500",
     Cloud: "from-purple-500 to-violet-500",
     Infrastructure: "from-orange-500 to-red-500",
+    Cybersécurité: "from-red-500 to-pink-500",
+    Système: "from-gray-500 to-slate-500",
+    Réseaux: "from-teal-500 to-blue-500",
   };
 
   const handleCategorySelect = (categoryName: string) => {
@@ -57,13 +107,65 @@ const CardList: React.FC = () => {
     navigate(`/questionnaire/${categoryName}/${technologyKey}`);
   };
 
-  const categories = Object.entries(technologyBasedData);
-
   return (
     <div className="space-y-8">
+      {/* Path Header */}
+      {progress.selectedPath && (
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Award className="w-6 h-6 text-yellow-400" />
+                <span className="text-lg font-semibold text-white">
+                  Parcours: {getCurrentPathName()}
+                </span>
+              </div>
+              <div className="text-sm text-gray-400">
+                {Object.keys(progress.completedQuizzes).length} quiz complétés
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <motion.button
+                onClick={toggleShowAllDomains}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  progress.showAllDomains
+                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
+                    : "bg-white/10 text-gray-300 border border-white/20 hover:bg-white/20"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {progress.showAllDomains ? (
+                  <>
+                    <EyeOff className="w-4 h-4" />
+                    Masquer les autres domaines
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-4 h-4" />
+                    Afficher tous les domaines
+                  </>
+                )}
+              </motion.button>
+
+              <motion.button
+                onClick={() => setShowPathSelector(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Settings className="w-4 h-4" />
+                Changer de parcours
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {categories.map(([categoryName, categoryData]) => {
+        {filteredCategories.map(([categoryName, categoryData]) => {
           const IconComponent = categoryIcons[categoryName] || Code;
           const isSelected = selectedCategory === categoryName;
           const colorGradient =
@@ -216,6 +318,25 @@ const CardList: React.FC = () => {
               </div>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Path Selector Modal */}
+      <AnimatePresence>
+        {showPathSelector && (
+          <PathSelector
+            currentPath={progress.selectedPath}
+            onPathSelect={(pathId) => {
+              setSelectedPath(pathId);
+              if (pathId === "explore") {
+                // Pour le parcours "exploration", montrer tous les domaines
+                if (!progress.showAllDomains) {
+                  toggleShowAllDomains();
+                }
+              }
+            }}
+            onClose={() => setShowPathSelector(false)}
+          />
         )}
       </AnimatePresence>
     </div>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../lib/zustand";
+import { AnimatePresence } from "framer-motion";
+import { useAuthStore, useProgressStore } from "../../lib/zustand";
 import UserMenu from "../../components/UserMenu";
+import { PathSelector } from "../questionnaire/PathSelector";
 
 const features = [
   {
@@ -142,7 +144,9 @@ const LandingPage = () => {
   const [showEarlyAccessForm, setShowEarlyAccessForm] = useState(false);
   const [showCandidateForm, setShowCandidateForm] = useState(false);
   const [showRecruiterForm, setShowRecruiterForm] = useState(false);
+  const [showPathSelector, setShowPathSelector] = useState(false);
   const { isAuthenticated } = useAuthStore();
+  const { progress, setSelectedPath } = useProgressStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -152,6 +156,33 @@ const LandingPage = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Auto-show path selector for authenticated users without a path
+  useEffect(() => {
+    if (isAuthenticated && !progress.selectedPath) {
+      const timer = setTimeout(() => {
+        setShowPathSelector(true);
+      }, 2000); // Show after 2 seconds on landing
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, progress.selectedPath]);
+
+  const handlePathSelect = (pathId: string | null) => {
+    setSelectedPath(pathId);
+    if (pathId) {
+      // Navigate to questionnaire page with the selected path
+      navigate("/questionnaire");
+    }
+  };
+
+  const handleStartTest = () => {
+    if (isAuthenticated) {
+      setShowPathSelector(true);
+    } else {
+      // For non-authenticated users, suggest signing up first
+      setShowCandidateForm(true);
+    }
+  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#010116] text-white font-sans">
@@ -244,10 +275,12 @@ const LandingPage = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <button
-                onClick={() => setShowCandidateForm(true)}
+                onClick={handleStartTest}
                 className="bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-4 rounded-full font-medium text-white text-center shadow-lg shadow-blue-900/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all duration-300 transform-gpu"
               >
-                🎯 Je veux tester la plateforme
+                {isAuthenticated && progress.selectedPath
+                  ? "🚀 Continuer mes tests"
+                  : "🎯 Je veux tester la plateforme"}
               </button>
               <button
                 onClick={() => setShowRecruiterForm(true)}
@@ -256,6 +289,62 @@ const LandingPage = () => {
                 👀 Découvrir pour mon entreprise
               </button>
             </div>
+
+            {/* Current Path Badge */}
+            {progress.selectedPath && (
+              <div className="mt-8 flex flex-col items-center gap-4">
+                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 flex items-center gap-3">
+                  <span className="text-white/80 text-sm">
+                    Parcours actuel:
+                  </span>
+                  <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent font-medium">
+                    {progress.selectedPath === "frontend" &&
+                      "Développement Frontend"}
+                    {progress.selectedPath === "backend" && "Backend / API"}
+                    {progress.selectedPath === "devops" &&
+                      "DevOps / Infrastructure"}
+                    {progress.selectedPath === "security" &&
+                      "Sécurité / Cybersécurité"}
+                    {progress.selectedPath === "network" && "Réseau / Systèmes"}
+                    {progress.selectedPath === "explore" && "Exploration libre"}
+                  </span>
+                  <button
+                    onClick={() => setShowPathSelector(true)}
+                    className="text-blue-400 hover:text-blue-300 text-sm underline transition-colors"
+                  >
+                    Changer
+                  </button>
+                </div>
+
+                {/* Progress Stats */}
+                {Object.keys(progress.completedQuizzes).length > 0 && (
+                  <div className="flex items-center gap-6 text-sm text-white/70">
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-400">✓</span>
+                      <span>
+                        {Object.keys(progress.completedQuizzes).length} quiz
+                        {Object.keys(progress.completedQuizzes).length > 1
+                          ? "s"
+                          : ""}{" "}
+                        complété
+                        {Object.keys(progress.completedQuizzes).length > 1
+                          ? "s"
+                          : ""}
+                      </span>
+                    </div>
+                    {progress.badges.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-yellow-400">🏆</span>
+                        <span>
+                          {progress.badges.length} badge
+                          {progress.badges.length > 1 ? "s" : ""}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Hero image */}
@@ -1097,6 +1186,17 @@ const LandingPage = () => {
           </div>
         </div>
       )}
+
+      {/* Path Selector Modal */}
+      <AnimatePresence>
+        {showPathSelector && (
+          <PathSelector
+            onPathSelect={handlePathSelect}
+            onClose={() => setShowPathSelector(false)}
+            currentPath={progress.selectedPath}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
