@@ -2,8 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Scale, Shield, Mail, MapPin, Phone } from "lucide-react";
+import { useSmartNavigation } from "../../lib/navigation";
 
 const LegalPage: React.FC = () => {
+  const { goBack } = useSmartNavigation();
+
   return (
     <div className="min-h-screen bg-[#010116] text-white">
       {/* Background gradients */}
@@ -18,13 +21,13 @@ const LegalPage: React.FC = () => {
       <div className="relative z-10 px-6 pt-12 pb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <Link
-              to="/"
+            <button
+              onClick={() => goBack("/")}
               className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              Retour à l'accueil
-            </Link>
+              Retour
+            </button>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg tracking-tighter bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                 Fyndra

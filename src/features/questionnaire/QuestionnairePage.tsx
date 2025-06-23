@@ -19,10 +19,12 @@ import {
 import CardList from "./CardList";
 import { technologyBasedData } from "./data/technologies";
 import { useAuthStore, useProgressStore } from "../../lib/zustand";
+import { useSmartNavigation } from "../../lib/navigation";
 
 const QuestionnairePage: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const { goBack, goToPage } = useSmartNavigation();
   const { isAuthenticated } = useAuthStore();
   const { addCompletedQuiz, addBadge } = useProgressStore();
   const [showMissionInfo, setShowMissionInfo] = useState(false);
@@ -97,11 +99,11 @@ const QuestionnairePage: React.FC = () => {
               {category}.
             </p>
             <motion.button
-              onClick={() => navigate("/questionnaire")}
+              onClick={() => goBack("/questionnaire")}
               className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-medium"
               whileHover={{ scale: 1.05 }}
             >
-              Retour aux missions
+              Retour
             </motion.button>
           </div>
         </div>
@@ -156,16 +158,16 @@ const QuestionnairePage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <motion.button
-                    onClick={() => navigate("/")}
+                    onClick={() => goBack("/questionnaire")}
                     className="flex items-center gap-2 px-3 py-2 text-white/80 hover:text-white transition-colors"
                     whileHover={{ scale: 1.05 }}
                   >
-                    <Home className="w-5 h-5" />
-                    Accueil
+                    <ArrowLeft className="w-5 h-5" />
+                    Retour
                   </motion.button>
                   <span className="text-white/40">•</span>
                   <motion.button
-                    onClick={() => navigate("/questionnaire")}
+                    onClick={() => goToPage("/questionnaire")}
                     className="text-white/60 hover:text-white transition-colors"
                   >
                     Tests gratuits
@@ -280,11 +282,11 @@ const QuestionnairePage: React.FC = () => {
                   Refaire le test
                 </motion.button>
                 <motion.button
-                  onClick={() => navigate("/questionnaire")}
+                  onClick={() => goBack("/questionnaire")}
                   className="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-medium"
                   whileHover={{ scale: 1.05 }}
                 >
-                  Autres missions
+                  Retour
                 </motion.button>
               </div>
             </div>
@@ -300,17 +302,17 @@ const QuestionnairePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <motion.button
-                  onClick={() => navigate("/")}
+                  onClick={() => goBack("/questionnaire")}
                   className="flex items-center gap-2 px-3 py-2 text-white/80 hover:text-white transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Home className="w-5 h-5" />
-                  Accueil
+                  <ArrowLeft className="w-5 h-5" />
+                  Retour
                 </motion.button>
                 <span className="text-white/40">•</span>
                 <motion.button
-                  onClick={() => navigate("/questionnaire")}
+                  onClick={() => goToPage("/questionnaire")}
                   className="text-white/60 hover:text-white transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -342,13 +344,13 @@ const QuestionnairePage: React.FC = () => {
           {/* Header du questionnaire spécifique */}
           <div className="mb-8">
             <motion.button
-              onClick={() => navigate("/questionnaire")}
+              onClick={() => goBack("/questionnaire")}
               className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all mb-6"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <ArrowLeft className="w-5 h-5" />
-              Retour aux missions
+              Retour
             </motion.button>
 
             <div className="flex items-center justify-between mb-4">
@@ -482,13 +484,13 @@ const QuestionnairePage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.button
-                onClick={() => navigate("/")}
+                onClick={() => goBack("/")}
                 className="flex items-center gap-2 px-3 py-2 text-white/80 hover:text-white transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Home className="w-5 h-5" />
-                Accueil
+                <ArrowLeft className="w-5 h-5" />
+                Retour
               </motion.button>
               <span className="text-white/40">•</span>
               <span className="text-white/60">Tests gratuits</span>

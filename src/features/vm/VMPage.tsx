@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useSmartNavigation } from "../../lib/navigation";
 
 const VMPage = () => {
   const [searchParams] = useSearchParams();
+  const { goBack } = useSmartNavigation();
   const missionId = searchParams.get("mission");
   const [isLoading, setIsLoading] = useState(true);
   const [terminalLines, setTerminalLines] = useState<string[]>([
@@ -167,12 +169,12 @@ const VMPage = () => {
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               Connected
             </div>
-            <Link
-              to="/demo"
+            <button
+              onClick={() => goBack("/demo")}
               className="text-white/60 hover:text-white text-sm transition-colors"
             >
-              ← Retour à la démo
-            </Link>
+              ← Retour
+            </button>
           </div>
         </div>
       </div>
