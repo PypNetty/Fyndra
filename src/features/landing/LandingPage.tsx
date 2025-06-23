@@ -24,7 +24,7 @@ const features = [
   {
     icon: "⚡",
     title: "Validation instantanée",
-    desc: "Terminez un test et recevez votre certification de compétences immédiatement.",
+    desc: "Terminez un test et recevez votre bilan de compétences détaillé et recommandations de certifications officielles",
   },
 ];
 
