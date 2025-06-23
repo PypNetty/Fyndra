@@ -77,7 +77,7 @@ const LegalPage: React.FC = () => {
                   <h3 className="text-white font-semibold mb-2">
                     Raison sociale :
                   </h3>
-                  <p>PypNetty SARL</p>
+                  <p>Fyndra</p>
                 </div>
                 <div>
                   <h3 className="text-white font-semibold mb-2">
@@ -251,7 +251,7 @@ const LegalPage: React.FC = () => {
                   <strong className="text-white">
                     Responsable du traitement :
                   </strong>{" "}
-                  PypNetty SARL
+                  Fyndra
                 </p>
                 <p>
                   <strong className="text-white">
@@ -382,7 +382,7 @@ const LegalPage: React.FC = () => {
                 Dernière mise à jour : 22 juin 2025
               </p>
               <p className="text-gray-500 text-xs mt-2">
-                © 2025 PypNetty SARL - Tous droits réservés
+                © 2025 Fyndra - Tous droits réservés
               </p>
             </motion.div>
           </div>

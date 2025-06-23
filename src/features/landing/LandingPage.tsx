@@ -189,6 +189,30 @@ const LandingPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Empêcher le scroll de la page derrière les modales
+  useEffect(() => {
+    const hasOpenModal =
+      showEarlyAccessForm ||
+      showCandidateForm ||
+      showRecruiterForm ||
+      showContactForm ||
+      showPathSelector;
+    if (hasOpenModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [
+    showEarlyAccessForm,
+    showCandidateForm,
+    showRecruiterForm,
+    showContactForm,
+    showPathSelector,
+  ]);
+
   // Auto-show path selector for authenticated users without a path (only once per session)
   useEffect(() => {
     if (
@@ -674,9 +698,6 @@ ${recruiterData.name}`;
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Pour les apprenants */}
             <div className="relative bg-blue-500/10 backdrop-blur-sm border border-blue-500/20 rounded-3xl p-8 group hover:bg-blue-500/20 transition-all duration-300">
-              <div className="absolute -top-4 -left-4 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                🟦
-              </div>
               <h3 className="text-xl font-bold text-white mb-6">
                 Pour les apprenants / candidats
               </h3>
@@ -708,9 +729,6 @@ ${recruiterData.name}`;
 
             {/* Pour les formateurs */}
             <div className="relative bg-yellow-500/10 backdrop-blur-sm border border-yellow-500/20 rounded-3xl p-8 group hover:bg-yellow-500/20 transition-all duration-300">
-              <div className="absolute -top-4 -left-4 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                🟨
-              </div>
               <h3 className="text-xl font-bold text-white mb-6">
                 Pour les formateurs / écoles
               </h3>
@@ -736,9 +754,6 @@ ${recruiterData.name}`;
 
             {/* Pour les recruteurs */}
             <div className="relative bg-green-500/10 backdrop-blur-sm border border-green-500/20 rounded-3xl p-8 group hover:bg-green-500/20 transition-all duration-300">
-              <div className="absolute -top-4 -left-4 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                🟩
-              </div>
               <h3 className="text-xl font-bold text-white mb-6">
                 Pour les recruteurs / entreprises
               </h3>
@@ -985,7 +1000,10 @@ ${recruiterData.name}`;
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative z-10 py-24">
+      <section
+        id="contact"
+        className="relative z-10 py-24 bg-gradient-to-b from-transparent to-white/5"
+      >
         <div className="max-w-4xl mx-auto px-6">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-violet-500/20 rounded-3xl blur-xl"></div>
@@ -1106,10 +1124,13 @@ ${recruiterData.name}`;
 
       {/* Early Access Form Modal */}
       {showEarlyAccessForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div
+            className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-6 sm:p-8 max-w-md w-full my-8 mx-auto"
+            style={{ maxHeight: "calc(100vh - 2rem)" }}
+          >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
                 {formSubmitted ? "✅ Demande envoyée !" : "🚀 Early Access"}
               </h3>
               <button
@@ -1253,10 +1274,13 @@ ${recruiterData.name}`;
 
       {/* Candidate Form Modal */}
       {showCandidateForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div
+            className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-6 sm:p-8 max-w-md w-full my-8 mx-auto"
+            style={{ maxHeight: "calc(100vh - 2rem)" }}
+          >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
                 {candidateFormSubmitted
                   ? "✅ Demande envoyée !"
                   : "🎯 Tester la plateforme"}
@@ -1447,10 +1471,13 @@ ${recruiterData.name}`;
 
       {/* Recruiter Form Modal */}
       {showRecruiterForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div
+            className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-6 sm:p-8 max-w-md w-full my-8 mx-auto"
+            style={{ maxHeight: "calc(100vh - 2rem)" }}
+          >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
                 👀 Démo Entreprise
               </h3>
               <button
@@ -1598,10 +1625,13 @@ ${recruiterData.name}`;
 
       {/* Contact Form Modal */}
       {showContactForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div
+            className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-6 sm:p-8 max-w-md w-full my-8 mx-auto"
+            style={{ maxHeight: "calc(100vh - 2rem)" }}
+          >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
                 📧 Nous contacter
               </h3>
               <button
