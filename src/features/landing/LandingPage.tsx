@@ -145,6 +145,11 @@ const LandingPage = () => {
   const [showCandidateForm, setShowCandidateForm] = useState(false);
   const [showRecruiterForm, setShowRecruiterForm] = useState(false);
   const [showPathSelector, setShowPathSelector] = useState(false);
+  const [earlyAccessData, setEarlyAccessData] = useState({
+    name: "",
+    email: "",
+    objective: "apprendre",
+  });
   const { isAuthenticated } = useAuthStore();
   const { progress, setSelectedPath } = useProgressStore();
   const navigate = useNavigate();
@@ -193,6 +198,37 @@ const LandingPage = () => {
       // Pour les utilisateurs non connectés, suggérer de s'inscrire d'abord
       setShowCandidateForm(true);
     }
+  };
+
+  const handleEarlyAccessSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Créer le contenu de l'email
+    const subject = "Demande Early Access - Fyndra";
+    const body = `Bonjour,
+
+Je souhaite rejoindre le programme early access de Fyndra.
+
+Informations :
+- Nom : ${earlyAccessData.name}
+- Email : ${earlyAccessData.email}
+- Objectif : ${earlyAccessData.objective}
+
+Merci !
+
+Cordialement,
+${earlyAccessData.name}`;
+
+    // Ouvrir le client email par défaut
+    window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    // Fermer le modal
+    setShowEarlyAccessForm(false);
+
+    // Réinitialiser le formulaire
+    setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
   };
 
   return (
@@ -895,18 +931,20 @@ const LandingPage = () => {
               </button>
             </div>
 
-            <form
-              action="https://formspree.io/f/YOUR_FORM_ID"
-              method="POST"
-              className="space-y-4"
-            >
+            <form onSubmit={handleEarlyAccessSubmit} className="space-y-4">
               <div>
                 <label className="block text-white/80 mb-2">
                   Nom complet *
                 </label>
                 <input
                   type="text"
-                  name="name"
+                  value={earlyAccessData.name}
+                  onChange={(e) =>
+                    setEarlyAccessData({
+                      ...earlyAccessData,
+                      name: e.target.value,
+                    })
+                  }
                   required
                   className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
                   placeholder="Votre nom"
@@ -917,7 +955,13 @@ const LandingPage = () => {
                 <label className="block text-white/80 mb-2">Email *</label>
                 <input
                   type="email"
-                  name="email"
+                  value={earlyAccessData.email}
+                  onChange={(e) =>
+                    setEarlyAccessData({
+                      ...earlyAccessData,
+                      email: e.target.value,
+                    })
+                  }
                   required
                   className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
                   placeholder="votre@email.com"
@@ -929,7 +973,13 @@ const LandingPage = () => {
                   Objectif principal
                 </label>
                 <select
-                  name="objective"
+                  value={earlyAccessData.objective}
+                  onChange={(e) =>
+                    setEarlyAccessData({
+                      ...earlyAccessData,
+                      objective: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
                 >
                   <option value="apprendre">Apprendre et me former</option>
@@ -945,8 +995,12 @@ const LandingPage = () => {
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Rejoindre l'early access
+                📧 Envoyer ma demande
               </button>
+
+              <p className="text-white/60 text-sm text-center">
+                Cela ouvrira votre client email avec un message pré-rempli
+              </p>
             </form>
           </div>
         </div>
@@ -980,13 +1034,7 @@ const LandingPage = () => {
               </button>
             </div>
 
-            <form
-              action="https://formspree.io/f/YOUR_FORM_ID"
-              method="POST"
-              className="space-y-4"
-            >
-              <input type="hidden" name="form_type" value="candidate" />
-
+            <div className="space-y-4">
               <div>
                 <label className="block text-white/80 mb-2">
                   Nom complet *
@@ -1060,13 +1108,29 @@ const LandingPage = () => {
                   🎯 Commencer les tests maintenant
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() => {
+                    // Créer un email pour les candidats qui veulent une démo
+                    const subject = "Demande de démo personnalisée - Fyndra";
+                    const body = `Bonjour,
+
+Je souhaite recevoir une démonstration personnalisée de Fyndra.
+
+Merci de me recontacter.
+
+Cordialement`;
+
+                    window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+                      subject
+                    )}&body=${encodeURIComponent(body)}`;
+                    setShowCandidateForm(false);
+                  }}
                   className="w-full bg-white/10 border border-white/20 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:bg-white/20 transition-all duration-300"
                 >
                   📧 Recevoir une démo personnalisée
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
@@ -1099,11 +1163,7 @@ const LandingPage = () => {
               </button>
             </div>
 
-            <form
-              action="https://formspree.io/f/YOUR_FORM_ID"
-              method="POST"
-              className="space-y-4"
-            >
+            <div className="space-y-4">
               <input type="hidden" name="form_type" value="recruiter" />
 
               <div>
@@ -1188,12 +1248,32 @@ const LandingPage = () => {
               </div>
 
               <button
-                type="submit"
+                type="button"
+                onClick={() => {
+                  // Créer un email pour les recruteurs
+                  const subject = "Demande de démo entreprise - Fyndra";
+                  const body = `Bonjour,
+
+Je souhaite découvrir Fyndra pour mon entreprise et obtenir une démonstration.
+
+Merci de me recontacter pour organiser un rendez-vous.
+
+Cordialement`;
+
+                  window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+                    subject
+                  )}&body=${encodeURIComponent(body)}`;
+                  setShowRecruiterForm(false);
+                }}
                 className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Demander une démo entreprise
+                📧 Demander une démo
               </button>
-            </form>
+
+              <p className="text-white/60 text-sm text-center mt-2">
+                Cela ouvrira votre client email pour nous contacter
+              </p>
+            </div>
           </div>
         </div>
       )}
