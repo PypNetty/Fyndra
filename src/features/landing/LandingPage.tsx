@@ -157,11 +157,16 @@ const LandingPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Auto-show path selector for authenticated users without a path
+  // Auto-show path selector for authenticated users without a path (only once per session)
   useEffect(() => {
-    if (isAuthenticated && !progress.selectedPath) {
+    if (
+      isAuthenticated &&
+      !progress.selectedPath &&
+      !sessionStorage.getItem("pathSelectorShown")
+    ) {
       const timer = setTimeout(() => {
         setShowPathSelector(true);
+        sessionStorage.setItem("pathSelectorShown", "true");
       }, 2000); // Show after 2 seconds on landing
       return () => clearTimeout(timer);
     }
@@ -177,9 +182,15 @@ const LandingPage = () => {
 
   const handleStartTest = () => {
     if (isAuthenticated) {
-      setShowPathSelector(true);
+      if (progress.selectedPath) {
+        // Si l'utilisateur a déjà un parcours, aller directement aux tests
+        navigate("/questionnaire");
+      } else {
+        // Sinon, montrer le sélecteur de parcours
+        setShowPathSelector(true);
+      }
     } else {
-      // For non-authenticated users, suggest signing up first
+      // Pour les utilisateurs non connectés, suggérer de s'inscrire d'abord
       setShowCandidateForm(true);
     }
   };

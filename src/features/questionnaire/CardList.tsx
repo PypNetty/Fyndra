@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -30,6 +30,7 @@ const CardList: React.FC = () => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showPathSelector, setShowPathSelector] = useState(false);
+  const technologiesRef = useRef<HTMLDivElement>(null);
 
   const { progress, setSelectedPath, toggleShowAllDomains, addCompletedQuiz } =
     useProgressStore();
@@ -40,6 +41,18 @@ const CardList: React.FC = () => {
       setShowPathSelector(true);
     }
   }, [progress.selectedPath]);
+
+  // Scroll automatique vers les technologies quand une catégorie est sélectionnée
+  useEffect(() => {
+    if (selectedCategory && technologiesRef.current) {
+      setTimeout(() => {
+        technologiesRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 300); // Petit délai pour laisser l'animation se terminer
+    }
+  }, [selectedCategory]);
 
   // Obtenir les catégories autorisées selon le parcours sélectionné
   const getAllowedCategories = () => {
@@ -247,6 +260,7 @@ const CardList: React.FC = () => {
       <AnimatePresence mode="wait">
         {selectedCategory && (
           <motion.div
+            ref={technologiesRef}
             key={selectedCategory}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
