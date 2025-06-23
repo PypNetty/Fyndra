@@ -38,6 +38,44 @@ const QuestionnairePage: React.FC = () => {
   // Extraction des paramètres de route
   const { category, technology } = params;
 
+  // Effet pour sauvegarder les résultats du quiz
+  React.useEffect(() => {
+    if (showResults && technology && Object.keys(selectedAnswers).length > 0) {
+      const categoryData =
+        technologyBasedData[category as keyof typeof technologyBasedData];
+      const techData = categoryData?.technologies[technology];
+      const questions = techData?.questionnaire || [];
+
+      if (questions.length > 0) {
+        let correct = 0;
+        questions.forEach((question, index) => {
+          if (selectedAnswers[index] === question.correctAnswer) {
+            correct++;
+          }
+        });
+        const percentage = Math.round((correct / questions.length) * 100);
+
+        addCompletedQuiz(technology, percentage);
+
+        // Attribuer des badges selon le score
+        if (percentage >= 90) {
+          addBadge(`Expert ${technology}`);
+        } else if (percentage >= 75) {
+          addBadge(`Avancé ${technology}`);
+        } else if (percentage >= 50) {
+          addBadge(`Intermédiaire ${technology}`);
+        }
+      }
+    }
+  }, [
+    showResults,
+    technology,
+    selectedAnswers,
+    category,
+    addCompletedQuiz,
+    addBadge,
+  ]);
+
   // Si nous avons des paramètres, afficher le questionnaire spécifique
   if (category && technology) {
     // Récupérer les questions pour cette technologie
@@ -110,22 +148,6 @@ const QuestionnairePage: React.FC = () => {
 
     if (showResults) {
       const score = calculateScore();
-
-      // Sauvegarder le résultat du quiz
-      React.useEffect(() => {
-        if (technology) {
-          addCompletedQuiz(technology, score.percentage);
-
-          // Attribuer des badges selon le score
-          if (score.percentage >= 90) {
-            addBadge(`Expert ${technology}`);
-          } else if (score.percentage >= 75) {
-            addBadge(`Avancé ${technology}`);
-          } else if (score.percentage >= 50) {
-            addBadge(`Intermédiaire ${technology}`);
-          }
-        }
-      }, [score.percentage, technology, addCompletedQuiz, addBadge]);
 
       return (
         <div className="min-h-screen bg-[#010116] text-white">
