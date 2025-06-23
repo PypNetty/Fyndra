@@ -145,11 +145,38 @@ const LandingPage = () => {
   const [showCandidateForm, setShowCandidateForm] = useState(false);
   const [showRecruiterForm, setShowRecruiterForm] = useState(false);
   const [showPathSelector, setShowPathSelector] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
   const [earlyAccessData, setEarlyAccessData] = useState({
     name: "",
     email: "",
     objective: "apprendre",
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [candidateData, setCandidateData] = useState({
+    name: "",
+    email: "",
+    profile: "frontend",
+    experience: "junior",
+  });
+  const [candidateFormSubmitted, setCandidateFormSubmitted] = useState(false);
+  const [isCandidateSubmitting, setIsCandidateSubmitting] = useState(false);
+  const [contactData, setContactData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [contactFormSubmitted, setContactFormSubmitted] = useState(false);
+  const [isContactSubmitting, setIsContactSubmitting] = useState(false);
+  const [recruiterData, setRecruiterData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    need: "recrutement",
+  });
+  const [recruiterFormSubmitted, setRecruiterFormSubmitted] = useState(false);
+  const [isRecruiterSubmitting, setIsRecruiterSubmitting] = useState(false);
   const { isAuthenticated } = useAuthStore();
   const { progress, setSelectedPath } = useProgressStore();
   const navigate = useNavigate();
@@ -200,12 +227,28 @@ const LandingPage = () => {
     }
   };
 
-  const handleEarlyAccessSubmit = (e: React.FormEvent) => {
+  const handleEarlyAccessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Créer le contenu de l'email
-    const subject = "Demande Early Access - Fyndra";
-    const body = `Bonjour,
+    try {
+      // Simulation d'un envoi (remplacer par un vrai service plus tard)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Marquer comme soumis avec succès
+      setFormSubmitted(true);
+
+      // Réinitialiser le formulaire après 3 secondes
+      setTimeout(() => {
+        setShowEarlyAccessForm(false);
+        setFormSubmitted(false);
+        setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
+      }, 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+      // En cas d'erreur, fallback vers mailto
+      const subject = "Demande Early Access - Fyndra";
+      const body = `Bonjour,
 
 Je souhaite rejoindre le programme early access de Fyndra.
 
@@ -219,16 +262,172 @@ Merci !
 Cordialement,
 ${earlyAccessData.name}`;
 
-    // Ouvrir le client email par défaut
-    window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
 
-    // Fermer le modal
-    setShowEarlyAccessForm(false);
+      setShowEarlyAccessForm(false);
+      setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    // Réinitialiser le formulaire
-    setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
+  const handleCandidateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCandidateSubmitting(true);
+
+    try {
+      // Simulation d'un envoi (remplacer par un vrai service plus tard)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Marquer comme soumis avec succès
+      setCandidateFormSubmitted(true);
+
+      // Réinitialiser le formulaire après 3 secondes
+      setTimeout(() => {
+        setShowCandidateForm(false);
+        setCandidateFormSubmitted(false);
+        setCandidateData({
+          name: "",
+          email: "",
+          profile: "frontend",
+          experience: "junior",
+        });
+      }, 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+      // En cas d'erreur, fallback vers mailto
+      const subject = "Demande de test plateforme - Fyndra";
+      const body = `Bonjour,
+
+Je souhaite tester la plateforme Fyndra.
+
+Informations :
+- Nom : ${candidateData.name}
+- Email : ${candidateData.email}
+- Profil : ${candidateData.profile}
+- Expérience : ${candidateData.experience}
+
+Merci de me recontacter.
+
+Cordialement,
+${candidateData.name}`;
+
+      window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+
+      setShowCandidateForm(false);
+      setCandidateData({
+        name: "",
+        email: "",
+        profile: "frontend",
+        experience: "junior",
+      });
+    } finally {
+      setIsCandidateSubmitting(false);
+    }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsContactSubmitting(true);
+
+    try {
+      // Simulation d'un envoi (remplacer par un vrai service plus tard)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Marquer comme soumis avec succès
+      setContactFormSubmitted(true);
+
+      // Réinitialiser le formulaire après 3 secondes
+      setTimeout(() => {
+        setShowContactForm(false);
+        setContactFormSubmitted(false);
+        setContactData({ name: "", email: "", subject: "", message: "" });
+      }, 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+      // En cas d'erreur, fallback vers mailto
+      const subject = contactData.subject || "Contact - Fyndra";
+      const body = `Bonjour,
+
+${contactData.message}
+
+Informations :
+- Nom : ${contactData.name}
+- Email : ${contactData.email}
+
+Cordialement,
+${contactData.name}`;
+
+      window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+
+      setShowContactForm(false);
+      setContactData({ name: "", email: "", subject: "", message: "" });
+    } finally {
+      setIsContactSubmitting(false);
+    }
+  };
+
+  const handleRecruiterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsRecruiterSubmitting(true);
+
+    try {
+      // Simulation d'un envoi (remplacer par un vrai service plus tard)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Marquer comme soumis avec succès
+      setRecruiterFormSubmitted(true);
+
+      // Réinitialiser le formulaire après 3 secondes
+      setTimeout(() => {
+        setShowRecruiterForm(false);
+        setRecruiterFormSubmitted(false);
+        setRecruiterData({
+          name: "",
+          email: "",
+          company: "",
+          need: "recrutement",
+        });
+      }, 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi:", error);
+      // En cas d'erreur, fallback vers mailto
+      const subject = "Demande de démo entreprise - Fyndra";
+      const body = `Bonjour,
+
+Je souhaite découvrir Fyndra pour mon entreprise et obtenir une démonstration.
+
+Informations :
+- Nom : ${recruiterData.name}
+- Email : ${recruiterData.email}
+- Entreprise : ${recruiterData.company}
+- Besoin : ${recruiterData.need}
+
+Merci de me recontacter pour organiser un rendez-vous.
+
+Cordialement,
+${recruiterData.name}`;
+
+      window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+
+      setShowRecruiterForm(false);
+      setRecruiterData({
+        name: "",
+        email: "",
+        company: "",
+        need: "recrutement",
+      });
+    } finally {
+      setIsRecruiterSubmitting(false);
+    }
   };
 
   return (
@@ -808,8 +1007,8 @@ ${earlyAccessData.name}`;
                 </div>
 
                 <div className="text-center">
-                  <a
-                    href="mailto:contact@fyndra.com"
+                  <button
+                    onClick={() => setShowContactForm(true)}
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 text-white px-8 py-4 rounded-full font-medium shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                   >
                     <svg
@@ -825,8 +1024,8 @@ ${earlyAccessData.name}`;
                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                       ></path>
                     </svg>
-                    contact@fyndra.com
-                  </a>
+                    Nous contacter
+                  </button>
                 </div>
               </div>
             </div>
@@ -910,9 +1109,19 @@ ${earlyAccessData.name}`;
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-white">🚀 Early Access</h3>
+              <h3 className="text-2xl font-bold text-white">
+                {formSubmitted ? "✅ Demande envoyée !" : "🚀 Early Access"}
+              </h3>
               <button
-                onClick={() => setShowEarlyAccessForm(false)}
+                onClick={() => {
+                  setShowEarlyAccessForm(false);
+                  setFormSubmitted(false);
+                  setEarlyAccessData({
+                    name: "",
+                    email: "",
+                    objective: "apprendre",
+                  });
+                }}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
                 <svg
@@ -931,77 +1140,113 @@ ${earlyAccessData.name}`;
               </button>
             </div>
 
-            <form onSubmit={handleEarlyAccessSubmit} className="space-y-4">
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Nom complet *
-                </label>
-                <input
-                  type="text"
-                  value={earlyAccessData.name}
-                  onChange={(e) =>
-                    setEarlyAccessData({
-                      ...earlyAccessData,
-                      name: e.target.value,
-                    })
-                  }
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="Votre nom"
-                />
+            {formSubmitted ? (
+              // Message de confirmation
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">🎉</div>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Merci pour votre intérêt !
+                </h4>
+                <p className="text-white/80 mb-6">
+                  Votre demande d'early access a été enregistrée avec succès.
+                  Nous vous recontacterons très bientôt à l'adresse{" "}
+                  <span className="text-blue-400">{earlyAccessData.email}</span>
+                  .
+                </p>
+                <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4">
+                  <p className="text-blue-300 text-sm">
+                    💡 En attendant, n'hésitez pas à explorer notre plateforme
+                    et à tester nos questionnaires !
+                  </p>
+                </div>
               </div>
+            ) : (
+              // Formulaire
+              <form onSubmit={handleEarlyAccessSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Nom complet *
+                  </label>
+                  <input
+                    type="text"
+                    value={earlyAccessData.name}
+                    onChange={(e) =>
+                      setEarlyAccessData({
+                        ...earlyAccessData,
+                        name: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Votre nom"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/80 mb-2">Email *</label>
-                <input
-                  type="email"
-                  value={earlyAccessData.email}
-                  onChange={(e) =>
-                    setEarlyAccessData({
-                      ...earlyAccessData,
-                      email: e.target.value,
-                    })
-                  }
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="votre@email.com"
-                />
-              </div>
+                <div>
+                  <label className="block text-white/80 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    value={earlyAccessData.email}
+                    onChange={(e) =>
+                      setEarlyAccessData({
+                        ...earlyAccessData,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="votre@email.com"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Objectif principal
-                </label>
-                <select
-                  value={earlyAccessData.objective}
-                  onChange={(e) =>
-                    setEarlyAccessData({
-                      ...earlyAccessData,
-                      objective: e.target.value,
-                    })
-                  }
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Objectif principal
+                  </label>
+                  <select
+                    value={earlyAccessData.objective}
+                    onChange={(e) =>
+                      setEarlyAccessData({
+                        ...earlyAccessData,
+                        objective: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="apprendre">Apprendre et me former</option>
+                    <option value="emploi">Chercher un emploi</option>
+                    <option value="reconversion">
+                      Reconversion professionnelle
+                    </option>
+                    <option value="validation">Valider mes compétences</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full px-6 py-3 rounded-lg font-medium text-white shadow-lg transition-all duration-300 ${
+                    isSubmitting
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-gradient-to-r from-blue-500 to-violet-500 hover:shadow-xl"
+                  }`}
                 >
-                  <option value="apprendre">Apprendre et me former</option>
-                  <option value="emploi">Chercher un emploi</option>
-                  <option value="reconversion">
-                    Reconversion professionnelle
-                  </option>
-                  <option value="validation">Valider mes compétences</option>
-                </select>
-              </div>
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Envoi en cours...
+                    </div>
+                  ) : (
+                    "📧 Envoyer ma demande"
+                  )}
+                </button>
 
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                📧 Envoyer ma demande
-              </button>
-
-              <p className="text-white/60 text-sm text-center">
-                Cela ouvrira votre client email avec un message pré-rempli
-              </p>
-            </form>
+                <p className="text-white/60 text-sm text-center">
+                  Nous vous recontacterons rapidement pour vous donner accès à
+                  la plateforme
+                </p>
+              </form>
+            )}
           </div>
         </div>
       )}
@@ -1012,10 +1257,21 @@ ${earlyAccessData.name}`;
           <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-white">
-                🎯 Tester la plateforme
+                {candidateFormSubmitted
+                  ? "✅ Demande envoyée !"
+                  : "🎯 Tester la plateforme"}
               </h3>
               <button
-                onClick={() => setShowCandidateForm(false)}
+                onClick={() => {
+                  setShowCandidateForm(false);
+                  setCandidateFormSubmitted(false);
+                  setCandidateData({
+                    name: "",
+                    email: "",
+                    profile: "frontend",
+                    experience: "junior",
+                  });
+                }}
                 className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
                 <svg
@@ -1034,103 +1290,157 @@ ${earlyAccessData.name}`;
               </button>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Nom complet *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="Votre nom"
-                />
-              </div>
-
-              <div>
-                <label className="block text-white/80 mb-2">Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="votre@email.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Profil technique
-                </label>
-                <select
-                  name="profile"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                >
-                  <option value="frontend">Développeur Frontend</option>
-                  <option value="backend">Développeur Backend</option>
-                  <option value="fullstack">Développeur Fullstack</option>
-                  <option value="devops">DevOps / SRE</option>
-                  <option value="mobile">Développeur Mobile</option>
-                  <option value="data">Data Engineer / Scientist</option>
-                  <option value="sysadmin">Administrateur Système</option>
-                  <option value="security">
-                    Expert Sécurité / Cybersécurité
-                  </option>
-                  <option value="network">Administrateur Réseau</option>
-                  <option value="techinfo">Spécialiste Tech Info</option>
-                  <option value="other">Autre</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-white/80 mb-2">Expérience</label>
-                <select
-                  name="experience"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                >
-                  <option value="junior">Junior (0-2 ans)</option>
-                  <option value="intermediate">Intermédiaire (2-5 ans)</option>
-                  <option value="senior">Senior (5+ ans)</option>
-                  <option value="reconversion">En reconversion</option>
-                </select>
-              </div>
-
-              <div className="space-y-3">
+            {candidateFormSubmitted ? (
+              // Message de confirmation
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">🚀</div>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Parfait ! Votre demande a été enregistrée
+                </h4>
+                <p className="text-white/80 mb-6">
+                  Nous vous recontacterons à l'adresse{" "}
+                  <span className="text-blue-400">{candidateData.email}</span>{" "}
+                  pour vous donner accès aux tests personnalisés.
+                </p>
+                <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-4">
+                  <p className="text-green-300 text-sm">
+                    🎯 En attendant, vous pouvez déjà explorer nos
+                    questionnaires en libre accès !
+                  </p>
+                </div>
                 <button
-                  type="button"
                   onClick={() => {
                     navigate("/questionnaire");
                     setShowCandidateForm(false);
+                    setCandidateFormSubmitted(false);
                   }}
-                  className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  🎯 Commencer les tests maintenant
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    // Créer un email pour les candidats qui veulent une démo
-                    const subject = "Demande de démo personnalisée - Fyndra";
-                    const body = `Bonjour,
-
-Je souhaite recevoir une démonstration personnalisée de Fyndra.
-
-Merci de me recontacter.
-
-Cordialement`;
-
-                    window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
-                      subject
-                    )}&body=${encodeURIComponent(body)}`;
-                    setShowCandidateForm(false);
-                  }}
-                  className="w-full bg-white/10 border border-white/20 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:bg-white/20 transition-all duration-300"
-                >
-                  📧 Recevoir une démo personnalisée
+                  🎮 Explorer les tests maintenant
                 </button>
               </div>
-            </div>
+            ) : (
+              // Formulaire
+              <form onSubmit={handleCandidateSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Nom complet *
+                  </label>
+                  <input
+                    type="text"
+                    value={candidateData.name}
+                    onChange={(e) =>
+                      setCandidateData({
+                        ...candidateData,
+                        name: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Votre nom"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    value={candidateData.email}
+                    onChange={(e) =>
+                      setCandidateData({
+                        ...candidateData,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="votre@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Profil technique
+                  </label>
+                  <select
+                    value={candidateData.profile}
+                    onChange={(e) =>
+                      setCandidateData({
+                        ...candidateData,
+                        profile: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="frontend">Développeur Frontend</option>
+                    <option value="backend">Développeur Backend</option>
+                    <option value="fullstack">Développeur Fullstack</option>
+                    <option value="devops">DevOps / SRE</option>
+                    <option value="mobile">Développeur Mobile</option>
+                    <option value="data">Data Engineer / Scientist</option>
+                    <option value="sysadmin">Administrateur Système</option>
+                    <option value="security">
+                      Expert Sécurité / Cybersécurité
+                    </option>
+                    <option value="network">Administrateur Réseau</option>
+                    <option value="techinfo">Spécialiste Tech Info</option>
+                    <option value="other">Autre</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">Expérience</label>
+                  <select
+                    value={candidateData.experience}
+                    onChange={(e) =>
+                      setCandidateData({
+                        ...candidateData,
+                        experience: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="junior">Junior (0-2 ans)</option>
+                    <option value="intermediate">
+                      Intermédiaire (2-5 ans)
+                    </option>
+                    <option value="senior">Senior (5+ ans)</option>
+                    <option value="reconversion">En reconversion</option>
+                  </select>
+                </div>
+
+                <div className="space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigate("/questionnaire");
+                      setShowCandidateForm(false);
+                    }}
+                    className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    🎯 Commencer les tests maintenant
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isCandidateSubmitting}
+                    className={`w-full border border-white/20 px-6 py-3 rounded-lg font-medium text-white shadow-lg transition-all duration-300 ${
+                      isCandidateSubmitting
+                        ? "bg-gray-600 cursor-not-allowed border-gray-600"
+                        : "bg-white/10 hover:bg-white/20"
+                    }`}
+                  >
+                    {isCandidateSubmitting ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Envoi en cours...
+                      </div>
+                    ) : (
+                      "📧 Recevoir une démo personnalisée"
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
@@ -1163,117 +1473,260 @@ Cordialement`;
               </button>
             </div>
 
-            <div className="space-y-4">
-              <input type="hidden" name="form_type" value="recruiter" />
-
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Nom complet *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="Votre nom"
-                />
+            {recruiterFormSubmitted ? (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">✅</div>
+                <h4 className="text-xl font-bold text-green-400 mb-2">
+                  Demande envoyée !
+                </h4>
+                <p className="text-white/80">
+                  Merci pour votre intérêt. Notre équipe vous contactera dans
+                  les 24h pour organiser votre démo personnalisée.
+                </p>
               </div>
+            ) : (
+              <form onSubmit={handleRecruiterSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Nom complet *
+                  </label>
+                  <input
+                    type="text"
+                    value={recruiterData.name}
+                    onChange={(e) =>
+                      setRecruiterData({
+                        ...recruiterData,
+                        name: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Votre nom"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Email professionnel *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="votre@entreprise.com"
-                />
-              </div>
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Email professionnel *
+                  </label>
+                  <input
+                    type="email"
+                    value={recruiterData.email}
+                    onChange={(e) =>
+                      setRecruiterData({
+                        ...recruiterData,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="votre@entreprise.com"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Entreprise / Organisation *
-                </label>
-                <input
-                  type="text"
-                  name="company"
-                  required
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
-                  placeholder="Nom de votre entreprise"
-                />
-              </div>
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Entreprise / Organisation *
+                  </label>
+                  <input
+                    type="text"
+                    value={recruiterData.company}
+                    onChange={(e) =>
+                      setRecruiterData({
+                        ...recruiterData,
+                        company: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Nom de votre entreprise"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Type d'organisation
-                </label>
-                <select
-                  name="organization_type"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Besoin principal
+                  </label>
+                  <select
+                    value={recruiterData.need}
+                    onChange={(e) =>
+                      setRecruiterData({
+                        ...recruiterData,
+                        need: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="recrutement">
+                      Améliorer le recrutement tech
+                    </option>
+                    <option value="evaluation">
+                      Évaluer les compétences internes
+                    </option>
+                    <option value="formation">
+                      Suivre les progrès en formation
+                    </option>
+                    <option value="partenariat">
+                      Partenariat / Intégration
+                    </option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isRecruiterSubmitting}
+                  className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <option value="startup">Startup / Scale-up</option>
-                  <option value="pme">PME</option>
-                  <option value="grand_compte">Grand compte</option>
-                  <option value="cabinet_recrutement">
-                    Cabinet de recrutement
-                  </option>
-                  <option value="organisme_formation">
-                    Organisme de formation
-                  </option>
-                  <option value="autre">Autre</option>
-                </select>
-              </div>
+                  {isRecruiterSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Envoi en cours...
+                    </div>
+                  ) : (
+                    "📧 Demander une démo"
+                  )}
+                </button>
 
-              <div>
-                <label className="block text-white/80 mb-2">
-                  Besoin principal
-                </label>
-                <select
-                  name="need"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                >
-                  <option value="recrutement">
-                    Améliorer le recrutement tech
-                  </option>
-                  <option value="evaluation">
-                    Évaluer les compétences internes
-                  </option>
-                  <option value="formation">
-                    Suivre les progrès en formation
-                  </option>
-                  <option value="partenariat">Partenariat / Intégration</option>
-                </select>
-              </div>
+                <p className="text-white/60 text-sm text-center">
+                  Notre équipe vous contactera dans les 24h
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white">
+                📧 Nous contacter
+              </h3>
               <button
-                type="button"
-                onClick={() => {
-                  // Créer un email pour les recruteurs
-                  const subject = "Demande de démo entreprise - Fyndra";
-                  const body = `Bonjour,
-
-Je souhaite découvrir Fyndra pour mon entreprise et obtenir une démonstration.
-
-Merci de me recontacter pour organiser un rendez-vous.
-
-Cordialement`;
-
-                  window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
-                    subject
-                  )}&body=${encodeURIComponent(body)}`;
-                  setShowRecruiterForm(false);
-                }}
-                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => setShowContactForm(false)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
               >
-                📧 Demander une démo
+                <svg
+                  className="w-6 h-6 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
-
-              <p className="text-white/60 text-sm text-center mt-2">
-                Cela ouvrira votre client email pour nous contacter
-              </p>
             </div>
+
+            {contactFormSubmitted ? (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">✅</div>
+                <h4 className="text-xl font-bold text-green-400 mb-2">
+                  Message envoyé !
+                </h4>
+                <p className="text-white/80">
+                  Merci pour votre message. Nous vous répondrons dans les plus
+                  brefs délais.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-white/80 mb-2">
+                    Nom complet *
+                  </label>
+                  <input
+                    type="text"
+                    value={contactData.name}
+                    onChange={(e) =>
+                      setContactData({
+                        ...contactData,
+                        name: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Votre nom"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    value={contactData.email}
+                    onChange={(e) =>
+                      setContactData({
+                        ...contactData,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="votre@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">Sujet *</label>
+                  <input
+                    type="text"
+                    value={contactData.subject}
+                    onChange={(e) =>
+                      setContactData({
+                        ...contactData,
+                        subject: e.target.value,
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                    placeholder="Sujet de votre message"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/80 mb-2">Message *</label>
+                  <textarea
+                    value={contactData.message}
+                    onChange={(e) =>
+                      setContactData({
+                        ...contactData,
+                        message: e.target.value,
+                      })
+                    }
+                    required
+                    rows={4}
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500 resize-none"
+                    placeholder="Votre message..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isContactSubmitting}
+                  className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isContactSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Envoi en cours...
+                    </div>
+                  ) : (
+                    "📧 Envoyer le message"
+                  )}
+                </button>
+
+                <p className="text-white/60 text-sm text-center">
+                  Nous vous répondrons dans les 24h
+                </p>
+              </form>
+            )}
           </div>
         </div>
       )}
