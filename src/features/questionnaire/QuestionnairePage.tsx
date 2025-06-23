@@ -207,6 +207,66 @@ const QuestionnairePage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Détail des réponses */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6 mb-8 text-left">
+                <h3 className="text-xl font-bold text-white mb-6 text-center">
+                  Détail de vos réponses
+                </h3>
+                <div className="space-y-4 max-h-96 overflow-y-auto">
+                  {questions.map((question, index) => {
+                    const userAnswer = selectedAnswers[index];
+                    const isCorrect = userAnswer === question.correctAnswer;
+                    return (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-lg border ${
+                          isCorrect
+                            ? "bg-green-500/10 border-green-500/30"
+                            : "bg-red-500/10 border-red-500/30"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div
+                            className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${
+                              isCorrect ? "bg-green-500" : "bg-red-500"
+                            }`}
+                          >
+                            {isCorrect ? (
+                              <CheckCircle className="w-4 h-4 text-white" />
+                            ) : (
+                              <X className="w-4 h-4 text-white" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-white font-medium mb-2">
+                              Question {index + 1}: {question.question}
+                            </h4>
+                            <div className="space-y-2 text-sm">
+                              <div
+                                className={`${
+                                  isCorrect ? "text-green-300" : "text-red-300"
+                                }`}
+                              >
+                                <strong>Votre réponse:</strong>{" "}
+                                {userAnswer !== undefined
+                                  ? question.options[userAnswer]
+                                  : "Pas de réponse"}
+                              </div>
+                              {!isCorrect && (
+                                <div className="text-green-300">
+                                  <strong>Bonne réponse:</strong>{" "}
+                                  {question.options[question.correctAnswer]}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="flex gap-4 justify-center">
                 <motion.button
                   onClick={() => {
