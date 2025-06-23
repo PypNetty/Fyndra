@@ -2,6 +2,9 @@ import { frontTechnologies } from "./Front";
 import { backTechnologies } from "./Back";
 import { cloudTechnologies } from "./Cloud";
 import { infrastructureTechnologies } from "./Infrastructure";
+import { techInfoTechnologies } from "./TechInfo";
+import { systèmeTechnologies } from "./Système";
+import { réseauxTechnologies } from "./Réseaux";
 import { TechnologyCategory } from "../../types";
 
 // Export des questions par technologie pour la compatibilité
@@ -10,6 +13,9 @@ export { nodejsQuestions } from "./Back/Node.js";
 export { awsQuestions } from "./Cloud/AWS";
 export { dockerQuestions } from "./Infrastructure/Docker";
 export { terraformQuestions } from "./Infrastructure/Terraform";
+export { sécuritéQuestions } from "./TechInfo/Sécurité";
+export { linuxQuestions } from "./Système/Linux";
+export { tcpipQuestions } from "./Réseaux/TCP-IP";
 
 // Structure organisée par technologies
 export const technologyBasedData = {
@@ -17,6 +23,9 @@ export const technologyBasedData = {
   Back: backTechnologies,
   Cloud: cloudTechnologies,
   Infrastructure: infrastructureTechnologies,
+  "Tech Info": techInfoTechnologies,
+  Système: systèmeTechnologies,
+  Réseaux: réseauxTechnologies,
 };
 
 // Regroupement de toutes les questions pour compatibilité avec l'ancien système
@@ -26,6 +35,9 @@ export const allQuestions = [
   ...cloudTechnologies.technologies.AWS.questionnaire,
   ...infrastructureTechnologies.technologies.Docker.questionnaire,
   ...infrastructureTechnologies.technologies.Terraform.questionnaire,
+  ...techInfoTechnologies.technologies["Sécurité"].questionnaire,
+  ...systèmeTechnologies.technologies["Linux"].questionnaire,
+  ...réseauxTechnologies.technologies["TCP/IP"].questionnaire,
 ];
 
 // Configuration des catégories de technologies
@@ -57,5 +69,26 @@ export const technologyCategories: TechnologyCategory[] = [
     description: "Outils de conteneurisation et Infrastructure as Code",
     icon: "🏗️",
     technologies: Object.keys(infrastructureTechnologies.technologies),
+  },
+  {
+    id: "techinfo",
+    name: "Tech Info",
+    description: "Technologies de l'information et cybersécurité",
+    icon: "🔒",
+    technologies: Object.keys(techInfoTechnologies.technologies),
+  },
+  {
+    id: "système",
+    name: "Système",
+    description: "Administration système et environnements Linux/Unix",
+    icon: "🖥️",
+    technologies: Object.keys(systèmeTechnologies.technologies),
+  },
+  {
+    id: "réseaux",
+    name: "Réseaux",
+    description: "Protocoles réseau, administration et sécurité",
+    icon: "🌐",
+    technologies: Object.keys(réseauxTechnologies.technologies),
   },
 ];

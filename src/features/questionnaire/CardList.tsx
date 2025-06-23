@@ -12,6 +12,9 @@ import {
   Trophy,
   Clock,
   Users,
+  Shield,
+  Terminal,
+  Wifi,
 } from "lucide-react";
 import { technologyBasedData } from "./data/technologies";
 
@@ -26,6 +29,9 @@ const CardList: React.FC = () => {
     Back: Server,
     Cloud: Cloud,
     Infrastructure: Database,
+    "Tech Info": Shield,
+    Système: Terminal,
+    Réseaux: Wifi,
   };
 
   // Couleurs pour chaque catégorie

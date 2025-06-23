@@ -139,6 +139,9 @@ const testimonials = [
 
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [showEarlyAccessForm, setShowEarlyAccessForm] = useState(false);
+  const [showCandidateForm, setShowCandidateForm] = useState(false);
+  const [showRecruiterForm, setShowRecruiterForm] = useState(false);
   const { isAuthenticated } = useAuthStore();
 
   useEffect(() => {
@@ -239,18 +242,18 @@ const LandingPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <a
-                href="#features"
+              <button
+                onClick={() => setShowCandidateForm(true)}
                 className="bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-4 rounded-full font-medium text-white text-center shadow-lg shadow-blue-900/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all duration-300 transform-gpu"
               >
-                Prouver mes compétences
-              </a>
-              <Link
-                to="/questionnaire"
+                🎯 Je veux tester la plateforme
+              </button>
+              <button
+                onClick={() => setShowRecruiterForm(true)}
                 className="px-8 py-4 rounded-full font-medium text-white/90 text-center border border-white/20 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 transition-all duration-300 transform-gpu"
               >
-                Voir un test gratuit
-              </Link>
+                👀 Découvrir pour mon entreprise
+              </button>
             </div>
           </div>
 
@@ -435,13 +438,22 @@ const LandingPage = () => {
                 juste ce que tu dis savoir.
               </p>
               <div className="mt-6">
-                <Link
-                  to="/questionnaire"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-violet-500 px-8 py-3 rounded-full font-medium text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <span>🚀</span>
-                  Commencer maintenant
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button
+                    onClick={() => setShowCandidateForm(true)}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-full font-medium text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <span>🎯</span>
+                    Tester maintenant
+                  </button>
+                  <button
+                    onClick={() => setShowEarlyAccessForm(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <span>✨</span>
+                    Early access
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -601,6 +613,41 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Early Access Section */}
+      <section className="relative z-10 py-24 bg-gradient-to-b from-transparent to-white/5">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-violet-500/10 rounded-3xl blur-xl"></div>
+
+            <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-10 shadow-2xl overflow-hidden">
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-violet-500/20 rounded-full blur-2xl"></div>
+
+              <div className="relative">
+                <div className="text-4xl mb-6">🚀</div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400 bg-clip-text text-transparent">
+                    Envie de tester Fyndra avant tout le monde ?
+                  </span>
+                </h2>
+                <p className="text-white/80 mb-8 text-lg">
+                  Rejoignez notre programme early access et soyez parmi les
+                  premiers à découvrir la révolution du recrutement tech.
+                </p>
+
+                <button
+                  onClick={() => setShowEarlyAccessForm(true)}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 text-white px-8 py-4 rounded-full font-medium shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  <span>✨</span>
+                  Je veux tester en avant-première
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="relative z-10 py-24">
         <div className="max-w-4xl mx-auto px-6">
@@ -720,6 +767,317 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
+
+      {/* Early Access Form Modal */}
+      {showEarlyAccessForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white">🚀 Early Access</h3>
+              <button
+                onClick={() => setShowEarlyAccessForm(false)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <form
+              action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST"
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Nom complet *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="Votre nom"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="votre@email.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Objectif principal
+                </label>
+                <select
+                  name="objective"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="apprendre">Apprendre et me former</option>
+                  <option value="emploi">Chercher un emploi</option>
+                  <option value="reconversion">
+                    Reconversion professionnelle
+                  </option>
+                  <option value="validation">Valider mes compétences</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Rejoindre l'early access
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Candidate Form Modal */}
+      {showCandidateForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white">
+                🎯 Tester la plateforme
+              </h3>
+              <button
+                onClick={() => setShowCandidateForm(false)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <form
+              action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST"
+              className="space-y-4"
+            >
+              <input type="hidden" name="form_type" value="candidate" />
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Nom complet *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="Votre nom"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="votre@email.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Profil technique
+                </label>
+                <select
+                  name="profile"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="frontend">Développeur Frontend</option>
+                  <option value="backend">Développeur Backend</option>
+                  <option value="fullstack">Développeur Fullstack</option>
+                  <option value="devops">DevOps / SRE</option>
+                  <option value="mobile">Développeur Mobile</option>
+                  <option value="data">Data Engineer / Scientist</option>
+                  <option value="other">Autre</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">Expérience</label>
+                <select
+                  name="experience"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="junior">Junior (0-2 ans)</option>
+                  <option value="intermediate">Intermédiaire (2-5 ans)</option>
+                  <option value="senior">Senior (5+ ans)</option>
+                  <option value="reconversion">En reconversion</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Lancer ma démo personnalisée
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Recruiter Form Modal */}
+      {showRecruiterForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[#0a0a1a] border border-white/20 rounded-2xl p-8 max-w-md w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white">
+                👀 Démo Entreprise
+              </h3>
+              <button
+                onClick={() => setShowRecruiterForm(false)}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <form
+              action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST"
+              className="space-y-4"
+            >
+              <input type="hidden" name="form_type" value="recruiter" />
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Nom complet *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="Votre nom"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Email professionnel *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="votre@entreprise.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Entreprise / Organisation *
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  required
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500"
+                  placeholder="Nom de votre entreprise"
+                />
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Type d'organisation
+                </label>
+                <select
+                  name="organization_type"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="startup">Startup / Scale-up</option>
+                  <option value="pme">PME</option>
+                  <option value="grand_compte">Grand compte</option>
+                  <option value="cabinet_recrutement">
+                    Cabinet de recrutement
+                  </option>
+                  <option value="organisme_formation">
+                    Organisme de formation
+                  </option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-white/80 mb-2">
+                  Besoin principal
+                </label>
+                <select
+                  name="need"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                >
+                  <option value="recrutement">
+                    Améliorer le recrutement tech
+                  </option>
+                  <option value="evaluation">
+                    Évaluer les compétences internes
+                  </option>
+                  <option value="formation">
+                    Suivre les progrès en formation
+                  </option>
+                  <option value="partenariat">Partenariat / Intégration</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Demander une démo entreprise
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
