@@ -43,7 +43,7 @@ export const allQuestions = [
   ...infrastructureTechnologies.technologies.Terraform.questionnaire,
   ...techInfoTechnologies.technologies["Sécurité"].questionnaire,
   ...systèmeTechnologies.technologies["Linux"].questionnaire,
-  ...réseauxTechnologies.technologies["TCP/IP"].questionnaire,
+  ...réseauxTechnologies.technologies["TCP-IP"].questionnaire,
 ];
 
 // Configuration des catégories de technologies

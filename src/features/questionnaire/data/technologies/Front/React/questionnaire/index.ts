@@ -5,23 +5,24 @@ export const reactQuestions = [
       "Une extension de syntaxe JavaScript qui permet d'écrire du HTML",
       "Un framework CSS pour React",
       "Une base de données pour React",
-      "Un gestionnaire d'état pour React"
+      "Un gestionnaire d'état pour React",
     ],
     correctAnswer: 0,
     category: "React Basics",
-    difficulty: "Débutant"
+    difficulty: "Débutant",
   },
   {
-    question: "Quelle est la différence entre un composant fonctionnel et un composant de classe ?",
+    question:
+      "Quelle est la différence entre un composant fonctionnel et un composant de classe ?",
     options: [
       "Les composants fonctionnels ne peuvent pas avoir d'état",
       "Les composants de classe sont plus performants",
       "Les composants fonctionnels utilisent des hooks pour gérer l'état",
-      "Il n'y a aucune différence"
+      "Il n'y a aucune différence",
     ],
     correctAnswer: 2,
     category: "Components",
-    difficulty: "Intermédiaire"
+    difficulty: "Intermédiaire",
   },
   {
     question: "Que fait le hook useEffect ?",
@@ -29,11 +30,11 @@ export const reactQuestions = [
       "Il gère l'état local du composant",
       "Il effectue des effets de bord (side effects)",
       "Il optimise les performances",
-      "Il valide les props"
+      "Il valide les props",
     ],
     correctAnswer: 1,
     category: "Hooks",
-    difficulty: "Intermédiaire"
+    difficulty: "Intermédiaire",
   },
   {
     question: "Comment optimiser les performances d'une liste en React ?",
@@ -41,11 +42,11 @@ export const reactQuestions = [
       "Utiliser des index comme keys",
       "Utiliser React.memo et des keys uniques",
       "Ne jamais utiliser de keys",
-      "Utiliser uniquement des composants de classe"
+      "Utiliser uniquement des composants de classe",
     ],
     correctAnswer: 1,
     category: "Performance",
-    difficulty: "Avancé"
+    difficulty: "Avancé",
   },
   {
     question: "Qu'est-ce que le lifting state up en React ?",
@@ -53,11 +54,11 @@ export const reactQuestions = [
       "Optimiser les performances avec useMemo",
       "Déplacer l'état vers un composant parent commun",
       "Utiliser Redux pour gérer l'état global",
-      "Créer des composants plus petits"
+      "Créer des composants plus petits",
     ],
     correctAnswer: 1,
     category: "State Management",
-    difficulty: "Intermédiaire"
+    difficulty: "Intermédiaire",
   },
   {
     question: "Dans quel cas utiliser useCallback ?",
@@ -65,11 +66,11 @@ export const reactQuestions = [
       "Pour toutes les fonctions dans un composant",
       "Pour éviter les re-rendus inutiles d'enfants qui reçoivent la fonction",
       "Pour gérer l'état local",
-      "Pour faire des appels API"
+      "Pour faire des appels API",
     ],
     correctAnswer: 1,
     category: "Hooks",
-    difficulty: "Avancé"
+    difficulty: "Avancé",
   },
   {
     question: "Quelle est la bonne façon de gérer les formulaires en React ?",
@@ -77,11 +78,11 @@ export const reactQuestions = [
       "Utiliser uniquement des composants non contrôlés",
       "Utiliser des composants contrôlés avec useState",
       "Ne jamais utiliser d'événements onChange",
-      "Utiliser uniquement jQuery"
+      "Utiliser uniquement jQuery",
     ],
     correctAnswer: 1,
     category: "Forms",
-    difficulty: "Intermédiaire"
+    difficulty: "Intermédiaire",
   },
   {
     question: "Qu'est-ce que le Virtual DOM ?",
@@ -89,10 +90,10 @@ export const reactQuestions = [
       "Une copie exacte du DOM réel",
       "Une représentation JavaScript légère du DOM réel",
       "Un framework CSS",
-      "Une base de données"
+      "Une base de données",
     ],
     correctAnswer: 1,
     category: "Virtual DOM",
-    difficulty: "Intermédiaire"
-  }
+    difficulty: "Intermédiaire",
+  },
 ];

@@ -1,92 +1,86 @@
 export const tcpipQuestions = [
   {
-    id: 1,
     question: "Que signifie TCP/IP ?",
     options: [
       "Transmission Control Protocol/Internet Protocol",
       "Transfer Control Program/Internet Program",
       "Technical Communication Protocol/Internet Protocol",
-      "Transport Connection Protocol/Internal Protocol",
+      "Transport Connection Protocol/Internal Protocol"
     ],
     correctAnswer: 0,
     category: "Protocol Basics",
-    difficulty: "Débutant",
+    difficulty: "Débutant"
   },
   {
-    id: 2,
     question: "Quelle est la différence entre TCP et UDP ?",
     options: [
       "TCP est plus rapide qu'UDP",
       "TCP est fiable et orienté connexion, UDP est plus rapide mais moins fiable",
-      "UDP est toujours plus sécurisé",
-      "Il n'y a aucune différence",
+      "UDP est plus sécurisé que TCP",
+      "Il n'y a aucune différence"
     ],
     correctAnswer: 1,
-    category: "Transport Layer",
-    difficulty: "Intermédiaire",
+    category: "Protocols",
+    difficulty: "Intermédiaire"
   },
   {
-    id: 3,
-    question: "Combien de couches comporte le modèle OSI ?",
-    options: ["5", "6", "7", "8"],
-    correctAnswer: 2,
-    category: "OSI Model",
-    difficulty: "Débutant",
-  },
-  {
-    id: 4,
-    question: "Quelle est la plage d'adresses IP privées de classe A ?",
+    question: "Quel est le rôle de l'adresse IP ?",
     options: [
-      "192.168.0.0 - 192.168.255.255",
-      "172.16.0.0 - 172.31.255.255",
-      "10.0.0.0 - 10.255.255.255",
-      "169.254.0.0 - 169.254.255.255",
+      "Identifier uniquement le fournisseur internet",
+      "Identifier de manière unique un équipement sur un réseau",
+      "Crypter les données",
+      "Accélérer la connexion"
     ],
-    correctAnswer: 2,
-    category: "IP Addressing",
-    difficulty: "Intermédiaire",
+    correctAnswer: 1,
+    category: "Addressing",
+    difficulty: "Débutant"
   },
   {
-    id: 5,
     question: "Qu'est-ce qu'un masque de sous-réseau ?",
     options: [
-      "Un protocole de sécurité",
-      "Un nombre qui définit quelle partie d'une adresse IP identifie le réseau",
-      "Un type d'adresse IP",
-      "Un logiciel de réseau",
+      "Un logiciel de sécurité",
+      "Une adresse de sauvegarde",
+      "Un mécanisme pour diviser un réseau en sous-réseaux",
+      "Un protocole de routage"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     category: "Subnetting",
-    difficulty: "Intermédiaire",
+    difficulty: "Intermédiaire"
   },
   {
-    id: 6,
-    question:
-      "Quel protocole est utilisé pour résoudre les noms de domaine en adresses IP ?",
-    options: ["DHCP", "DNS", "ARP", "ICMP"],
-    correctAnswer: 1,
-    category: "Name Resolution",
-    difficulty: "Débutant",
-  },
-  {
-    id: 7,
-    question: "Qu'est-ce que le port 80 en général ?",
-    options: ["HTTPS", "HTTP", "FTP", "SSH"],
-    correctAnswer: 1,
-    category: "Ports & Services",
-    difficulty: "Débutant",
-  },
-  {
-    id: 8,
-    question: "Qu'est-ce que NAT (Network Address Translation) ?",
+    question: "Que signifie DHCP ?",
     options: [
-      "Un protocole de routage",
-      "Une technique qui permet de traduire des adresses IP privées en publiques",
-      "Un type de firewall",
+      "Dynamic Host Configuration Protocol",
+      "Direct Host Communication Protocol",
+      "Data Host Control Protocol",
+      "Dynamic Hardware Configuration Program"
+    ],
+    correctAnswer: 0,
+    category: "Network Services",
+    difficulty: "Intermédiaire"
+  },
+  {
+    question: "Quel port utilise par défaut le protocole HTTP ?",
+    options: [
+      "21",
+      "25",
+      "80",
+      "443"
+    ],
+    correctAnswer: 2,
+    category: "Ports",
+    difficulty: "Débutant"
+  },
+  {
+    question: "Qu'est-ce que le modèle OSI ?",
+    options: [
       "Un protocole de sécurité",
+      "Un modèle de référence en 7 couches pour les communications réseau",
+      "Un type de câble réseau",
+      "Un système d'exploitation"
     ],
     correctAnswer: 1,
-    category: "Network Address Translation",
-    difficulty: "Avancé",
-  },
+    category: "Network Models",
+    difficulty: "Intermédiaire"
+  }
 ];
