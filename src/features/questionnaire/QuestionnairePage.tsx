@@ -11,6 +11,10 @@ import {
   ArrowLeft,
   Home,
   User,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  CheckCircle,
 } from "lucide-react";
 import CardList from "./CardList";
 import { technologyBasedData } from "./data/technologies";
@@ -23,11 +27,171 @@ const QuestionnairePage: React.FC = () => {
   const [showMissionInfo, setShowMissionInfo] = useState(false);
   const [showSampleReport, setShowSampleReport] = useState(false);
 
+  // État du questionnaire
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<
+    Record<number, number>
+  >({});
+  const [showResults, setShowResults] = useState(false);
+
   // Extraction des paramètres de route
   const { category, technology } = params;
 
   // Si nous avons des paramètres, afficher le questionnaire spécifique
   if (category && technology) {
+    // Récupérer les questions pour cette technologie
+    const categoryData =
+      technologyBasedData[category as keyof typeof technologyBasedData];
+    const techData = categoryData?.technologies[technology];
+    const questions = techData?.questionnaire || [];
+
+    if (questions.length === 0) {
+      return (
+        <div className="min-h-screen bg-[#010116] text-white flex items-center justify-center">
+          <div className="text-center">
+            <Target className="w-16 h-16 text-red-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Questionnaire non trouvé
+            </h2>
+            <p className="text-gray-300 mb-6">
+              Aucun questionnaire disponible pour {technology} dans la catégorie{" "}
+              {category}.
+            </p>
+            <motion.button
+              onClick={() => navigate("/questionnaire")}
+              className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-medium"
+              whileHover={{ scale: 1.05 }}
+            >
+              Retour aux missions
+            </motion.button>
+          </div>
+        </div>
+      );
+    }
+
+    const currentQuestion = questions[currentQuestionIndex];
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+    const handleAnswerSelect = (answerIndex: number) => {
+      setSelectedAnswers({
+        ...selectedAnswers,
+        [currentQuestionIndex]: answerIndex,
+      });
+    };
+
+    const handleNext = () => {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        setShowResults(true);
+      }
+    };
+
+    const handlePrevious = () => {
+      if (currentQuestionIndex > 0) {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+      }
+    };
+
+    const calculateScore = () => {
+      let correct = 0;
+      questions.forEach((question, index) => {
+        if (selectedAnswers[index] === question.correctAnswer) {
+          correct++;
+        }
+      });
+      return {
+        correct,
+        total: questions.length,
+        percentage: Math.round((correct / questions.length) * 100),
+      };
+    };
+
+    if (showResults) {
+      const score = calculateScore();
+      return (
+        <div className="min-h-screen bg-[#010116] text-white">
+          <nav className="border-b border-white/10 bg-[#010116]/80 backdrop-blur-sm">
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <motion.button
+                    onClick={() => navigate("/")}
+                    className="flex items-center gap-2 px-3 py-2 text-white/80 hover:text-white transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Home className="w-5 h-5" />
+                    Accueil
+                  </motion.button>
+                  <span className="text-white/40">•</span>
+                  <motion.button
+                    onClick={() => navigate("/questionnaire")}
+                    className="text-white/60 hover:text-white transition-colors"
+                  >
+                    Tests gratuits
+                  </motion.button>
+                  <span className="text-white/40">•</span>
+                  <span className="text-white/60">Résultats {technology}</span>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <div className="container mx-auto px-6 py-12">
+            <div className="max-w-2xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mb-8"
+              >
+                <Trophy className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
+                <h1 className="text-4xl font-bold text-white mb-4">
+                  Test terminé !
+                </h1>
+                <p className="text-gray-300 text-lg">
+                  Questionnaire {technology} - Catégorie {category}
+                </p>
+              </motion.div>
+
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-8 mb-8">
+                <div className="text-6xl font-bold text-blue-400 mb-2">
+                  {score.percentage}%
+                </div>
+                <p className="text-gray-300 text-lg mb-4">
+                  {score.correct} bonnes réponses sur {score.total}
+                </p>
+
+                <div className="flex justify-center gap-8 text-sm text-gray-400">
+                  <div>Temps: ~{questions.length * 2} min</div>
+                  <div>Niveau: {techData?.difficulty}</div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 justify-center">
+                <motion.button
+                  onClick={() => {
+                    setCurrentQuestionIndex(0);
+                    setSelectedAnswers({});
+                    setShowResults(false);
+                  }}
+                  className="px-6 py-3 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-all"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Refaire le test
+                </motion.button>
+                <motion.button
+                  onClick={() => navigate("/questionnaire")}
+                  className="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-medium"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Autres missions
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="min-h-screen bg-[#010116] text-white">
         {/* Navigation Bar */}
@@ -43,6 +207,15 @@ const QuestionnairePage: React.FC = () => {
                 >
                   <Home className="w-5 h-5" />
                   Accueil
+                </motion.button>
+                <span className="text-white/40">•</span>
+                <motion.button
+                  onClick={() => navigate("/questionnaire")}
+                  className="text-white/60 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Tests gratuits
                 </motion.button>
                 <span className="text-white/40">•</span>
                 <span className="text-white/60">Test {technology}</span>
@@ -67,37 +240,134 @@ const QuestionnairePage: React.FC = () => {
 
         <div className="container mx-auto px-6 py-12">
           {/* Header du questionnaire spécifique */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="mb-8">
             <motion.button
               onClick={() => navigate("/questionnaire")}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all mb-6"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <ArrowLeft className="w-5 h-5" />
               Retour aux missions
             </motion.button>
-            <div>
-              <h1 className="text-3xl font-bold text-white capitalize">
-                Questionnaire {technology}
-              </h1>
-              <p className="text-gray-400">Catégorie: {category}</p>
+
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h1 className="text-3xl font-bold text-white capitalize">
+                  Test {technology}
+                </h1>
+                <p className="text-gray-400 text-lg">Catégorie: {category}</p>
+              </div>
+
+              <div className="text-right">
+                <p className="text-blue-300 text-sm">
+                  Question {currentQuestionIndex + 1} sur {questions.length}
+                </p>
+                <div className="w-32 h-2 bg-white/10 rounded-full mt-2">
+                  <div
+                    className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Contenu du questionnaire - à implémenter */}
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-8 text-center">
-            <Target className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-4">
-              Questionnaire {technology} prêt !
-            </h2>
-            <p className="text-gray-300 mb-6">
-              Le questionnaire interactif sera implémenté ici avec les données
-              de la nouvelle architecture.
-            </p>
-            <p className="text-sm text-gray-400">
-              Données disponibles: {JSON.stringify({ category, technology })}
-            </p>
+          {/* Question actuelle */}
+          <div className="max-w-3xl mx-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentQuestionIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-8"
+              >
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
+                      {currentQuestion.category}
+                    </div>
+                    <div className="px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm">
+                      {currentQuestion.difficulty}
+                    </div>
+                  </div>
+
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    {currentQuestion.question}
+                  </h2>
+                </div>
+
+                <div className="space-y-3 mb-8">
+                  {currentQuestion.options.map((option, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => handleAnswerSelect(index)}
+                      className={`w-full p-4 text-left rounded-lg border transition-all ${
+                        selectedAnswers[currentQuestionIndex] === index
+                          ? "bg-blue-500/20 border-blue-500 text-white"
+                          : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:border-white/20"
+                      }`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                            selectedAnswers[currentQuestionIndex] === index
+                              ? "border-blue-500 bg-blue-500"
+                              : "border-gray-400"
+                          }`}
+                        >
+                          {selectedAnswers[currentQuestionIndex] === index && (
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          )}
+                        </div>
+                        <span className="text-lg">{option}</span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <motion.button
+                    onClick={handlePrevious}
+                    disabled={currentQuestionIndex === 0}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                      currentQuestionIndex === 0
+                        ? "opacity-50 cursor-not-allowed bg-gray-600"
+                        : "bg-white/10 border border-white/20 hover:bg-white/20"
+                    }`}
+                    whileHover={currentQuestionIndex > 0 ? { scale: 1.05 } : {}}
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                    Précédent
+                  </motion.button>
+
+                  <motion.button
+                    onClick={handleNext}
+                    disabled={
+                      selectedAnswers[currentQuestionIndex] === undefined
+                    }
+                    className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all ${
+                      selectedAnswers[currentQuestionIndex] === undefined
+                        ? "opacity-50 cursor-not-allowed bg-gray-600"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    }`}
+                    whileHover={
+                      selectedAnswers[currentQuestionIndex] !== undefined
+                        ? { scale: 1.05 }
+                        : {}
+                    }
+                  >
+                    {currentQuestionIndex === questions.length - 1
+                      ? "Terminer"
+                      : "Suivant"}
+                    <ChevronRight className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

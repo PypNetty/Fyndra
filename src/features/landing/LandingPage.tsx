@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../lib/zustand";
 import UserMenu from "../../components/UserMenu";
 
@@ -143,6 +143,7 @@ const LandingPage = () => {
   const [showCandidateForm, setShowCandidateForm] = useState(false);
   const [showRecruiterForm, setShowRecruiterForm] = useState(false);
   const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -924,6 +925,12 @@ const LandingPage = () => {
                   <option value="devops">DevOps / SRE</option>
                   <option value="mobile">Développeur Mobile</option>
                   <option value="data">Data Engineer / Scientist</option>
+                  <option value="sysadmin">Administrateur Système</option>
+                  <option value="security">
+                    Expert Sécurité / Cybersécurité
+                  </option>
+                  <option value="network">Administrateur Réseau</option>
+                  <option value="techinfo">Spécialiste Tech Info</option>
                   <option value="other">Autre</option>
                 </select>
               </div>
@@ -941,12 +948,24 @@ const LandingPage = () => {
                 </select>
               </div>
 
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Lancer ma démo personnalisée
-              </button>
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate("/questionnaire");
+                    setShowCandidateForm(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  🎯 Commencer les tests maintenant
+                </button>
+                <button
+                  type="submit"
+                  className="w-full bg-white/10 border border-white/20 px-6 py-3 rounded-lg font-medium text-white shadow-lg hover:bg-white/20 transition-all duration-300"
+                >
+                  📧 Recevoir une démo personnalisée
+                </button>
+              </div>
             </form>
           </div>
         </div>
