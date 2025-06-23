@@ -1,4 +1,5 @@
 import { nodejsQuestions, nodejsCourses, nodejsVMs } from "./Node.js";
+import { pythonQuestions, pythonCourses, pythonVMs } from "./Python";
 
 export const backTechnologies = {
   name: "Backend",
@@ -12,6 +13,13 @@ export const backTechnologies = {
       cours: nodejsCourses,
       vm: nodejsVMs,
     },
-    // Python: ... (à ajouter plus tard)
+    Python: {
+      name: "Python",
+      description: "Langage de programmation polyvalent et puissant",
+      difficulty: "Débutant",
+      questionnaire: pythonQuestions,
+      cours: pythonCourses,
+      vm: pythonVMs,
+    },
   },
 };

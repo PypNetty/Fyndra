@@ -1,4 +1,5 @@
 import { reactQuestions, reactCourses, reactVMs } from "./React";
+import { vueQuestions, vueCourses, vueVMs } from "./Vue";
 
 export const frontTechnologies = {
   name: "Frontend",
@@ -14,6 +15,14 @@ export const frontTechnologies = {
       cours: reactCourses,
       vm: reactVMs,
     },
-    // Vue: ... (à ajouter plus tard)
+    Vue: {
+      name: "Vue.js",
+      description:
+        "Framework JavaScript progressif pour les interfaces utilisateur",
+      difficulty: "Intermédiaire",
+      questionnaire: vueQuestions,
+      cours: vueCourses,
+      vm: vueVMs,
+    },
   },
 };

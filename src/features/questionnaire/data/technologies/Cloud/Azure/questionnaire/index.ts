@@ -1,0 +1,88 @@
+export const azureQuestions = [
+  {
+    question: "Qu'est-ce que Microsoft Azure ?",
+    options: [
+      "Un système d'exploitation",
+      "Une plateforme de cloud computing",
+      "Un langage de programmation",
+      "Un logiciel de bureautique",
+    ],
+    correctAnswer: 1,
+    category: "Azure Basics",
+    difficulty: "Débutant",
+  },
+  {
+    question: "Quel service Azure fournit des machines virtuelles ?",
+    options: [
+      "Azure Functions",
+      "Azure Virtual Machines",
+      "Azure Storage",
+      "Azure SQL",
+    ],
+    correctAnswer: 1,
+    category: "Compute Services",
+    difficulty: "Débutant",
+  },
+  {
+    question: "Qu'est-ce qu'Azure Active Directory ?",
+    options: [
+      "Un service de stockage",
+      "Un service d'identité et de gestion des accès",
+      "Un service de base de données",
+      "Un service de réseau",
+    ],
+    correctAnswer: 1,
+    category: "Identity & Access",
+    difficulty: "Intermédiaire",
+  },
+  {
+    question: "Quel service Azure est équivalent à AWS Lambda ?",
+    options: ["Azure VM", "Azure Functions", "Azure Storage", "Azure SQL"],
+    correctAnswer: 1,
+    category: "Serverless",
+    difficulty: "Intermédiaire",
+  },
+  {
+    question: "Qu'est-ce qu'un Resource Group dans Azure ?",
+    options: [
+      "Un conteneur logique pour organiser les ressources Azure",
+      "Un type de machine virtuelle",
+      "Un service de stockage",
+      "Un protocole réseau",
+    ],
+    correctAnswer: 0,
+    category: "Resource Management",
+    difficulty: "Intermédiaire",
+  },
+  {
+    question: "Quel service Azure fournit du stockage blob ?",
+    options: [
+      "Azure Files",
+      "Azure Storage Account",
+      "Azure Disk",
+      "Azure Database",
+    ],
+    correctAnswer: 1,
+    category: "Storage",
+    difficulty: "Débutant",
+  },
+  {
+    question: "Qu'est-ce qu'Azure DevOps ?",
+    options: [
+      "Un service de stockage",
+      "Une suite d'outils pour le développement collaboratif",
+      "Un service de base de données",
+      "Un service de monitoring",
+    ],
+    correctAnswer: 1,
+    category: "DevOps",
+    difficulty: "Avancé",
+  },
+  {
+    question: "Comment surveiller les performances dans Azure ?",
+    options: ["Azure Monitor", "Azure Storage", "Azure Functions", "Azure SQL"],
+    correctAnswer: 0,
+    category: "Monitoring",
+    difficulty: "Intermédiaire",
+  },
+];

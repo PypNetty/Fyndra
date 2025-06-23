@@ -1,4 +1,4 @@
-export const nodejsQuestions = [
+export const nodejsQuestionsSimple = [
   {
     question: "Qu'est-ce que Node.js ?",
     options: [

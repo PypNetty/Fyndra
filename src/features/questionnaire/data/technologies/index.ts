@@ -9,8 +9,11 @@ import { TechnologyCategory } from "../../types";
 
 // Export des questions par technologie pour la compatibilité
 export { reactQuestions } from "./Front/React";
+export { vueQuestions } from "./Front/Vue";
 export { nodejsQuestions } from "./Back/Node.js";
+export { pythonQuestions } from "./Back/Python";
 export { awsQuestions } from "./Cloud/AWS";
+export { azureQuestions } from "./Cloud/Azure";
 export { dockerQuestions } from "./Infrastructure/Docker";
 export { terraformQuestions } from "./Infrastructure/Terraform";
 export { sécuritéQuestions } from "./TechInfo/Sécurité";
@@ -31,8 +34,11 @@ export const technologyBasedData = {
 // Regroupement de toutes les questions pour compatibilité avec l'ancien système
 export const allQuestions = [
   ...frontTechnologies.technologies.React.questionnaire,
+  ...frontTechnologies.technologies.Vue.questionnaire,
   ...backTechnologies.technologies["Node.js"].questionnaire,
+  ...backTechnologies.technologies.Python.questionnaire,
   ...cloudTechnologies.technologies.AWS.questionnaire,
+  ...cloudTechnologies.technologies.Azure.questionnaire,
   ...infrastructureTechnologies.technologies.Docker.questionnaire,
   ...infrastructureTechnologies.technologies.Terraform.questionnaire,
   ...techInfoTechnologies.technologies["Sécurité"].questionnaire,
