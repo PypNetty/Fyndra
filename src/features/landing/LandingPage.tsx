@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import { useAuthStore, useProgressStore } from "../../lib/zustand";
 import UserMenu from "../../components/UserMenu";
 import { PathSelector } from "../questionnaire/PathSelector";
@@ -261,22 +261,26 @@ const LandingPage = () => {
 
     try {
       // 🔒 PROTECTION ANTI-SPAM
-      const lastSubmission = localStorage.getItem('fyndra_last_submission');
+      const lastSubmission = localStorage.getItem("fyndra_last_submission");
       const now = Date.now();
-      
+
       if (lastSubmission) {
         const timeDiff = now - parseInt(lastSubmission);
         const COOLDOWN_MS = 60000; // 1 minute de cooldown
-        
+
         if (timeDiff < COOLDOWN_MS) {
           const remainingSeconds = Math.ceil((COOLDOWN_MS - timeDiff) / 1000);
-          throw new Error(`Veuillez attendre ${remainingSeconds} secondes avant d'envoyer un autre message.`);
+          throw new Error(
+            `Veuillez attendre ${remainingSeconds} secondes avant d'envoyer un autre message.`
+          );
         }
       }
 
       // Vérifier que EmailJS est configuré
       if (!isEmailJSConfigured()) {
-        throw new Error('EmailJS n\'est pas encore configuré. Consultez le fichier /src/config/emailjs.ts');
+        throw new Error(
+          "EmailJS n'est pas encore configuré. Consultez le fichier /src/config/emailjs.ts"
+        );
       }
 
       // Configuration EmailJS
@@ -285,15 +289,15 @@ const LandingPage = () => {
         from_email: earlyAccessData.email,
         to_email: EMAILJS_CONFIG.TO_EMAIL,
         objective: earlyAccessData.objective,
-        timestamp: new Date().toLocaleString('fr-FR'),
+        timestamp: new Date().toLocaleString("fr-FR"),
         message: `Nouvelle demande Early Access !
 
 👤 Nom : ${earlyAccessData.name}
 📧 Email : ${earlyAccessData.email}
 🎯 Objectif : ${earlyAccessData.objective}
-📅 Date : ${new Date().toLocaleString('fr-FR')}
+📅 Date : ${new Date().toLocaleString("fr-FR")}
 
-Cette personne souhaite rejoindre le programme Early Access de Fyndra.`
+Cette personne souhaite rejoindre le programme Early Access de Fyndra.`,
       };
 
       // Envoyer l'email via EmailJS
@@ -304,20 +308,28 @@ Cette personne souhaite rejoindre le programme Early Access de Fyndra.`
         EMAILJS_CONFIG.PUBLIC_KEY
       );
 
-      console.log('✅ Email envoyé avec succès:', result);
-      
+      console.log("✅ Email envoyé avec succès:", result);
+
+      // 🔒 MARQUER LE TIMESTAMP POUR ANTI-SPAM
+      localStorage.setItem("fyndra_last_submission", now.toString());
+
       // Sauvegarder aussi localement (backup)
       const submissionData = {
-        type: 'early_access',
+        type: "early_access",
         timestamp: new Date().toISOString(),
         data: earlyAccessData,
         emailSent: true,
-        emailjsResult: result
+        emailjsResult: result,
       };
-      
-      const existingSubmissions = JSON.parse(localStorage.getItem('fyndra_submissions') || '[]');
+
+      const existingSubmissions = JSON.parse(
+        localStorage.getItem("fyndra_submissions") || "[]"
+      );
       existingSubmissions.push(submissionData);
-      localStorage.setItem('fyndra_submissions', JSON.stringify(existingSubmissions));
+      localStorage.setItem(
+        "fyndra_submissions",
+        JSON.stringify(existingSubmissions)
+      );
 
       // Marquer comme soumis avec succès
       setFormSubmitted(true);
@@ -328,23 +340,27 @@ Cette personne souhaite rejoindre le programme Early Access de Fyndra.`
         setFormSubmitted(false);
         setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
       }, 5000);
-
     } catch (error) {
       console.error("Erreur lors de l'envoi via EmailJS:", error);
-      
+
       // Sauvegarder localement même en cas d'erreur
       const submissionData = {
-        type: 'early_access',
+        type: "early_access",
         timestamp: new Date().toISOString(),
         data: earlyAccessData,
         emailSent: false,
-        error: error.message || 'Erreur inconnue'
+        error: error.message || "Erreur inconnue",
       };
-      
-      const existingSubmissions = JSON.parse(localStorage.getItem('fyndra_submissions') || '[]');
+
+      const existingSubmissions = JSON.parse(
+        localStorage.getItem("fyndra_submissions") || "[]"
+      );
       existingSubmissions.push(submissionData);
-      localStorage.setItem('fyndra_submissions', JSON.stringify(existingSubmissions));
-      
+      localStorage.setItem(
+        "fyndra_submissions",
+        JSON.stringify(existingSubmissions)
+      );
+
       // Fallback vers mailto
       const subject = "Demande Early Access - Fyndra";
       const body = `Bonjour,
@@ -361,9 +377,11 @@ Merci !
 Cordialement,
 ${earlyAccessData.name}`;
 
-      window.location.href = `mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:${
+        EMAILJS_CONFIG.TO_EMAIL
+      }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        body
+      )}`;
 
       setShowEarlyAccessForm(false);
       setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
@@ -1245,20 +1263,37 @@ ${recruiterData.name}`;
                 </h4>
                 <p className="text-white/80 mb-4">
                   Votre demande d'early access a été transmise avec succès à{" "}
-                  <span className="text-green-400 font-semibold">contact@fyndra.me</span>.
-                  Nous vous recontacterons très bientôt à l'adresse{" "}
-                  <span className="text-blue-400 font-semibold">{earlyAccessData.email}</span>
+                  <span className="text-green-400 font-semibold">
+                    contact@fyndra.me
+                  </span>
+                  . Nous vous recontacterons très bientôt à l'adresse{" "}
+                  <span className="text-blue-400 font-semibold">
+                    {earlyAccessData.email}
+                  </span>
                   .
                 </p>
                 <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-4">
                   <div className="flex items-center justify-center mb-2">
-                    <svg className="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    <svg
+                      className="w-5 h-5 text-green-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
                     </svg>
-                    <span className="text-green-300 font-semibold">Email envoyé via EmailJS</span>
+                    <span className="text-green-300 font-semibold">
+                      Email envoyé via EmailJS
+                    </span>
                   </div>
                   <p className="text-green-200 text-sm">
-                    ✅ Votre demande a été transmise automatiquement<br/>
+                    ✅ Votre demande a été transmise automatiquement
+                    <br />
                     💾 Une copie de sauvegarde a été créée localement
                   </p>
                 </div>
