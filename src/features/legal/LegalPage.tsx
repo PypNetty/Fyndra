@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Scale, Shield, Mail, MapPin, Phone } from "lucide-react";
@@ -6,6 +6,37 @@ import { useSmartNavigation } from "../../lib/navigation";
 
 const LegalPage: React.FC = () => {
   const { goBack } = useSmartNavigation();
+
+  // Remonter en haut de la page lors du chargement
+  useEffect(() => {
+    // Nettoyer les styles qui pourraient interférer
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+
+    // Firefox-compatible scroll reset
+    const scrollToTop = () => {
+      // Méthode 1: window.scrollTo
+      window.scrollTo(0, 0);
+
+      // Méthode 2: documentElement pour Firefox
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      // Méthode 3: scrollIntoView sur le html
+      document.documentElement.scrollIntoView({
+        behavior: "instant",
+        block: "start",
+        inline: "start",
+      });
+    };
+
+    // Exécuter immédiatement
+    scrollToTop();
+
+    // Réessayer après les animations possibles
+    setTimeout(scrollToTop, 50);
+    setTimeout(scrollToTop, 150);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#010116] text-white">

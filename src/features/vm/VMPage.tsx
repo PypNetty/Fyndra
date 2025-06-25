@@ -29,7 +29,7 @@ const VMPage = () => {
         { name: "public/", type: "folder" },
         { name: "README.md", type: "file" },
       ],
-      startCommand: "npm run dev",
+      startCommand: "pnpm run dev",
     },
     "dev-backend": {
       title: "API Backend",
@@ -41,7 +41,7 @@ const VMPage = () => {
         { name: "src/models/", type: "folder" },
         { name: ".env", type: "file" },
       ],
-      startCommand: "npm start",
+      startCommand: "pnpm start",
     },
     "infra-docker": {
       title: "Infrastructure Docker",
@@ -296,8 +296,8 @@ app.listen(PORT, () => {
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --only=production
+COPY pnpm-lock.yaml package.json ./
+RUN pnpm install --frozen-lockfile --prod
 
 COPY . .
 
@@ -305,7 +305,7 @@ EXPOSE 3000
 
 USER node
 
-CMD ["npm", "start"]`}</pre>
+CMD ["pnpm", "start"]`}</pre>
                 )}
 
                 {missionId === "cloud-aws" && (

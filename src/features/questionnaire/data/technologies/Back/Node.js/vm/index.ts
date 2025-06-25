@@ -14,7 +14,7 @@ export const nodejsVMs = [
     },
     preInstalledTools: [
       "Node.js 20.x (LTS)",
-      "npm & yarn",
+      "pnpm & yarn",
       "PM2 (Process Manager)",
       "MongoDB 7.x",
       "Redis 7.x",
@@ -34,7 +34,7 @@ export const nodejsVMs = [
       "Configurer les variables d'environnement",
       "Démarrer MongoDB et Redis",
       "Cloner votre projet Node.js",
-      "Installer les dépendances avec npm install",
+      "Installer les dépendances avec pnpm install",
       "Lancer l'application avec PM2",
     ],
   },

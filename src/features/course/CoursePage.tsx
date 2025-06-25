@@ -325,11 +325,11 @@ FROM node:18-alpine
 # Répertoire de travail
 WORKDIR /app
 
-# Copier package.json
-COPY package*.json ./
+# Copier les fichiers de dépendances
+COPY pnpm-lock.yaml package.json ./
 
 # Installer les dépendances
-RUN npm ci --only=production
+RUN pnpm install --frozen-lockfile --prod
 
 # Copier le code source
 COPY . .
@@ -341,7 +341,7 @@ EXPOSE 3000
 USER node
 
 # Commande de démarrage
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
 \`\`\`
 
 Cette recette crée une image optimisée et sécurisée.`,

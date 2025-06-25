@@ -5,7 +5,7 @@ import emailjs from "@emailjs/browser";
 import { useAuthStore, useProgressStore } from "../../lib/zustand";
 import UserMenu from "../../components/UserMenu";
 import { PathSelector } from "../questionnaire/PathSelector";
-import { EMAILJS_CONFIG, isEmailJSConfigured } from "../../config/emailjs";
+import { emailjsConfig, isEarlyAccessConfigured } from "../../config/emailjs";
 
 const features = [
   {
@@ -275,7 +275,7 @@ const LandingPage = () => {
       }
 
       // Vérifier que EmailJS est configuré
-      if (!isEmailJSConfigured()) {
+      if (!isEarlyAccessConfigured()) {
         throw new Error(
           "EmailJS n'est pas encore configuré. Consultez le fichier /src/config/emailjs.ts"
         );
@@ -285,7 +285,7 @@ const LandingPage = () => {
       const templateParams = {
         from_name: earlyAccessData.name,
         from_email: earlyAccessData.email,
-        to_email: EMAILJS_CONFIG.TO_EMAIL,
+        to_email: emailjsConfig.toEmail,
         objective: earlyAccessData.objective,
         timestamp: new Date().toLocaleString("fr-FR"),
         message: `Nouvelle demande Early Access !
@@ -300,10 +300,10 @@ Cette personne souhaite rejoindre le programme Early Access de Fyndra.`,
 
       // Envoyer l'email via EmailJS
       const result = await emailjs.send(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
         templateParams,
-        EMAILJS_CONFIG.PUBLIC_KEY
+        emailjsConfig.publicKey
       );
 
       console.log("✅ Email envoyé avec succès:", result);
@@ -382,7 +382,7 @@ Cordialement,
 ${earlyAccessData.name}`;
 
         window.location.href = `mailto:${
-          EMAILJS_CONFIG.TO_EMAIL
+          emailjsConfig.toEmail
         }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
           body
         )}`;
@@ -457,20 +457,60 @@ ${candidateData.name}`;
     setIsContactSubmitting(true);
 
     try {
-      // Simulation d'un envoi (remplacer par un vrai service plus tard)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Anti-spam: vérifier que ce n'est pas un bot
+      if (contactData.message.length < 10 || contactData.name.length < 2) {
+        throw new Error("Message trop court ou invalide");
+      }
 
-      // Marquer comme soumis avec succès
-      setContactFormSubmitted(true);
+      // Préparer les paramètres pour EmailJS
+      const templateParams = {
+        from_name: contactData.name,
+        from_email: contactData.email,
+        subject: contactData.subject || "Contact - Fyndra",
+        message: contactData.message,
+        to_email: "contact@fyndra.io",
+      };
 
-      // Réinitialiser le formulaire après 3 secondes
-      setTimeout(() => {
-        setShowContactForm(false);
-        setContactFormSubmitted(false);
-        setContactData({ name: "", email: "", subject: "", message: "" });
-      }, 3000);
+      // Backup local immédiat
+      const contactBackup = {
+        ...contactData,
+        timestamp: new Date().toISOString(),
+        type: "contact",
+      };
+
+      try {
+        const existingBackup = localStorage.getItem("fyndra_contact_backup");
+        const backup = existingBackup ? JSON.parse(existingBackup) : [];
+        backup.push(contactBackup);
+        localStorage.setItem("fyndra_contact_backup", JSON.stringify(backup));
+      } catch (storageError) {
+        console.warn("Impossible de sauvegarder en local:", storageError);
+      }
+
+      // Envoyer via EmailJS
+      const result = await emailjs.send(
+        emailjsConfig.serviceId,
+        emailjsConfig.contactTemplateId,
+        templateParams,
+        emailjsConfig.publicKey
+      );
+
+      if (result.status === 200) {
+        // Marquer comme soumis avec succès
+        setContactFormSubmitted(true);
+
+        // Réinitialiser le formulaire après 3 secondes
+        setTimeout(() => {
+          setShowContactForm(false);
+          setContactFormSubmitted(false);
+          setContactData({ name: "", email: "", subject: "", message: "" });
+        }, 3000);
+      } else {
+        throw new Error(`EmailJS error: ${result.status}`);
+      }
     } catch (error) {
       console.error("Erreur lors de l'envoi:", error);
+
       // En cas d'erreur, fallback vers mailto
       const subject = contactData.subject || "Contact - Fyndra";
       const body = `Bonjour,
@@ -484,7 +524,7 @@ Informations :
 Cordialement,
 ${contactData.name}`;
 
-      window.location.href = `mailto:contact@fyndra.com?subject=${encodeURIComponent(
+      window.location.href = `mailto:contact@fyndra.io?subject=${encodeURIComponent(
         subject
       )}&body=${encodeURIComponent(body)}`;
 

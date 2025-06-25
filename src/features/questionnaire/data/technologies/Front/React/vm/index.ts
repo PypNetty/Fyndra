@@ -4,7 +4,7 @@ export const reactVMs = [
   {
     id: "react-dev-env",
     name: "Environnement de développement React",
-    description: "VM préconfigurée avec Node.js, npm, et Create React App",
+    description: "VM préconfigurée avec Node.js, pnpm, et Create React App",
     osType: "Ubuntu 22.04",
     specifications: {
       cpu: "2 vCPUs",
@@ -13,7 +13,7 @@ export const reactVMs = [
     },
     preInstalledTools: [
       "Node.js 18.x",
-      "npm / yarn",
+      "pnpm / yarn",
       "VS Code",
       "Git",
       "Chrome DevTools",
@@ -26,7 +26,7 @@ export const reactVMs = [
     setupInstructions: [
       "Se connecter via SSH ou VNC",
       "Cloner le projet de démarrage",
-      "Lancer npm start",
+      "Lancer pnpm start",
       "Ouvrir http://localhost:3000",
     ],
   },
