@@ -260,6 +260,20 @@ const LandingPage = () => {
     setIsSubmitting(true);
 
     try {
+      // 🔒 PROTECTION ANTI-SPAM
+      const lastSubmission = localStorage.getItem('fyndra_last_submission');
+      const now = Date.now();
+      
+      if (lastSubmission) {
+        const timeDiff = now - parseInt(lastSubmission);
+        const COOLDOWN_MS = 60000; // 1 minute de cooldown
+        
+        if (timeDiff < COOLDOWN_MS) {
+          const remainingSeconds = Math.ceil((COOLDOWN_MS - timeDiff) / 1000);
+          throw new Error(`Veuillez attendre ${remainingSeconds} secondes avant d'envoyer un autre message.`);
+        }
+      }
+
       // Vérifier que EmailJS est configuré
       if (!isEmailJSConfigured()) {
         throw new Error('EmailJS n\'est pas encore configuré. Consultez le fichier /src/config/emailjs.ts');
