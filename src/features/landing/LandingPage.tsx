@@ -360,7 +360,9 @@ Cette personne souhaite rejoindre le programme Early Access de Fyndra.`,
       );
 
       // Montrer un message d'erreur informatif
-      alert(`❌ Erreur technique: ${error.message}\n\n⏳ Redirection vers votre client email pour alternative...`);
+      alert(
+        `❌ Erreur technique: ${error.message}\n\n⏳ Redirection vers votre client email pour alternative...`
+      );
 
       // Fallback vers mailto après 2 secondes
       setTimeout(() => {
