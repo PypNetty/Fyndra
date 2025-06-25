@@ -671,14 +671,12 @@ ${recruiterData.name}`;
           <div className="flex flex-col items-center">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-center max-w-5xl leading-tight">
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-violet-400 bg-clip-text text-transparent">
-                Prouvez vos compétences IT,
+                Evoluez en tech avec votre IA personnelle
               </span>
-              <span> trouvez votre mission</span>
             </h1>
 
-            <p className="mt-6 text-lg md:text-xl text-center text-white/70 max-w-3xl">
-              Tests pratiques en situation réelle • Évaluation objective •
-              Matching emploi garanti
+            <p className="mt-6 text-lg md:text-xl text-center text-white max-w-3xl">
+              Pratique réelle • Suivi intelligent • Objectifs personnalisés
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
