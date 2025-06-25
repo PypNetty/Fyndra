@@ -20,13 +20,13 @@ const features = [
   },
   {
     icon: "🤝",
-    title: "Matching emploi garanti",
-    desc: "Accédez directement aux offres d'emploi correspondant à votre niveau de compétences prouvé.",
+    title: "Opportunités ciblées",
+    desc: "Fini les candidatures à l'aveugle. Accédez aux postes faits pour votre profil.",
   },
   {
     icon: "⚡",
     title: "Validation instantanée",
-    desc: "Terminez un test et recevez votre bilan de compétences détaillé et recommandations de certifications officielles",
+    desc: "Terminez un test et recevez votre bilan de compétences détaillé et recommandations de formations officielles",
   },
 ];
 
@@ -124,7 +124,7 @@ const advantages = [
         ></path>
       </svg>
     ),
-    text: "Compte complet pour historique des tests et accès aux offres d'emploi partenaires",
+    text: "Compte premium : historique + recommandations personnalisées",
   },
 ];
 
@@ -1119,7 +1119,7 @@ ${recruiterData.name}`;
                 </h2>
                 <p className="text-white/80 mb-8 text-lg">
                   Rejoignez notre programme early access et soyez parmi les
-                  premiers à découvrir la révolution du recrutement tech.
+                  premiers à découvrir l'évolution des compétences tech.
                 </p>
 
                 <button
