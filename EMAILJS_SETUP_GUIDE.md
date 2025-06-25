@@ -4,9 +4,7 @@
 
 ### 1. Création du Compte EmailJS
 
-1. Allez sur [h- Fallback vers `mailto:contact@fyndra.com`
-
-Consultez `localStorage.getItem('fyndra_submissions')` pour voir les sauvegardes.s://dashboard.emailjs.com/](https://dashboard.emailjs.com/)
+1. Allez sur [https://dashboard.emailjs.com/](https://dashboard.emailjs.com/)
 2. Créez un compte gratuit (100 emails/mois inclus)
 3. Confirmez votre email
 
@@ -15,23 +13,27 @@ Consultez `localStorage.getItem('fyndra_submissions')` pour voir les sauvegardes
 1. Dans le dashboard EmailJS, allez sur **Email Services**
 2. Cliquez sur **Add New Service**
 3. Choisissez votre fournisseur email (Gmail recommandé) :
-   - **Gmail** : Connectez votre compte Gmail `henryck.paris@pm.me` (qui recevra les emails de `contact@fyndra.com`)
+   - **Gmail** : Connectez votre compte Gmail qui recevra les emails de `contact@fyndra.io`
    - **Outlook** : Si vous utilisez Outlook
    - **Custom SMTP** : Pour d'autres fournisseurs
 4. Notez le **Service ID** généré (ex: `service_abc123`)
 
-### 3. Création du Template Email
+### 3. Création des Templates Email
+
+Vous devez créer **2 templates** différents :
+
+#### Template 1 : Early Access
 
 1. Allez sur **Email Templates**
 2. Cliquez sur **Create New Template**
 3. Configurez le template :
 
-#### Sujet de l'email :
+**Sujet de l'email :**
 ```
 Nouvelle demande Early Access - Fyndra
 ```
 
-#### Corps de l'email :
+**Corps de l'email :**
 ```
 Bonjour,
 
@@ -49,29 +51,67 @@ Message :
 Email automatique généré par le site Fyndra
 ```
 
-#### Configuration avancée :
-- **To Email** : `contact@fyndra.com`
+4. Sauvegardez et notez le **Template ID** (ex: `template_early123`)
+
+#### Template 2 : Contact Général
+
+1. Créez un **nouveau template** pour les messages de contact
+2. Configurez le template :
+
+**Sujet de l'email :**
+```
+{{subject}}
+```
+
+**Corps de l'email :**
+```
+Bonjour,
+
+Nouveau message de contact reçu :
+
+👤 Nom : {{from_name}}
+📧 Email : {{from_email}}
+📋 Sujet : {{subject}}
+📅 Date : Maintenant
+
+Message :
+{{message}}
+
+---
+Message envoyé depuis le formulaire de contact de Fyndra.
+```
+
+3. Sauvegardez et notez le **Template ID Contact** (ex: `template_contact123`)
+
+### 4. Configuration des Templates
+
+#### Configuration Early Access :
+- **To Email** : `contact@fyndra.io`
 - **From Name** : `{{from_name}}`
 - **Reply To** : `{{from_email}}`
 
-4. Sauvegardez et notez le **Template ID** (ex: `template_xyz789`)
+#### Configuration Contact :
+- **To Email** : `contact@fyndra.io`
+- **From Name** : `{{from_name}}`
+- **Reply To** : `{{from_email}}`
 
-### 4. Récupération de la Public Key
+### 5. Récupération de la Public Key
 
 1. Allez sur **Account** dans le menu
 2. Copiez votre **Public Key** (ex: `abcdefghij`)
 
-### 5. Configuration dans le Projet
+### 6. Configuration dans le Projet
 
 Mettez à jour le fichier `.env.local` :
 
 ```env
 VITE_EMAILJS_SERVICE_ID=service_abc123
-VITE_EMAILJS_TEMPLATE_ID=template_xyz789
+VITE_EMAILJS_TEMPLATE_ID=template_early123
+VITE_EMAILJS_CONTACT_TEMPLATE_ID=template_contact123
 VITE_EMAILJS_PUBLIC_KEY=abcdefghij
 ```
 
-### 6. Test de l'Intégration
+### 7. Test de l'Intégration
 
 1. Redémarrez le serveur de développement :
 ```bash
@@ -79,8 +119,9 @@ pnpm dev
 ```
 
 2. Testez le formulaire Early Access sur la landing page
-3. Vérifiez que l'email arrive sur `contact@fyndra.me`
-4. Vérifiez les logs dans la console du navigateur
+3. Testez le formulaire de contact (bouton "Nous contacter")
+4. Vérifiez que les emails arrivent sur `contact@fyndra.io`
+5. Vérifiez les logs dans la console du navigateur
 
 ## Vérification
 

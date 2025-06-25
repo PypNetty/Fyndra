@@ -56,7 +56,7 @@ websockify --web=/usr/share/novnc/ 6080 localhost:5901
 #### Option B: Wetty (Web Terminal)
 ```bash
 # Installation
-npm install -g wetty
+pnpm install -g wetty
 
 # Lancement
 wetty --port 3000 --host 0.0.0.0
@@ -80,7 +80,7 @@ Remplacer `MockVMService` par `ProductionVMService` dans `/src/lib/vmService.ts`
 Utiliser la librairie `xterm.js` pour un vrai terminal :
 
 ```bash
-npm install xterm @xterm/addon-websocket @xterm/addon-fit
+pnpm install xterm @xterm/addon-websocket @xterm/addon-fit
 ```
 
 ```typescript
@@ -190,10 +190,10 @@ export class DigitalOceanVMProvider implements VMProvider {
     return `#!/bin/bash
 # Installation automatique des outils pour ${missionId}
 apt-get update
-apt-get install -y nodejs npm docker.io git
+apt-get install -y nodejs pnpm docker.io git
 
 # Installation terminal web
-npm install -g ttyd
+pnpm install -g ttyd
 systemctl enable docker
 
 # Démarrage terminal web

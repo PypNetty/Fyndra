@@ -24,10 +24,18 @@ Environment: Production (et Preview si souhaité)
 ```
 
 ```bash
+Variable name: VITE_EMAILJS_CONTACT_TEMPLATE_ID
+Value: template_contact_abc123
+Environment: Production (et Preview si souhaité)
+```
+
+```bash
 Variable name: VITE_EMAILJS_PUBLIC_KEY
 Value: EUK3saDDLkFR0D891
 Environment: Production (et Preview si souhaité)
 ```
+
+**⚠️ Important** : Vous devez créer le template Contact sur EmailJS et remplacer `template_contact_abc123` par le vrai ID.
 
 ### 🔄 Redéploiement
 
@@ -58,7 +66,8 @@ Une fois redéployé :
 Les variables doivent apparaître comme :
 ```
 VITE_EMAILJS_SERVICE_ID: service_jo3i1eo
-VITE_EMAILJS_TEMPLATE_ID: template_8lz1z5x  
+VITE_EMAILJS_TEMPLATE_ID: template_8lz1z5x
+VITE_EMAILJS_CONTACT_TEMPLATE_ID: template_contact_abc123
 VITE_EMAILJS_PUBLIC_KEY: EUK3saDDLkFR0D891
 ```
 
@@ -77,9 +86,10 @@ VITE_EMAILJS_PUBLIC_KEY: EUK3saDDLkFR0D891
 ## 📧 Test final
 
 1. **Allez sur votre site** en production
-2. **Remplissez le formulaire** Early Access
-3. **Vérifiez votre Gmail** henryck.paris94@gmail.com
-4. **Succès !** 🎉
+2. **Testez le formulaire Early Access**
+3. **Testez le formulaire Contact** (bouton "Nous contacter")
+4. **Vérifiez votre Gmail** pour recevoir les emails
+5. **Succès !** 🎉
 
 ---
 
