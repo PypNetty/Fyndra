@@ -6,8 +6,6 @@ import { useAuthStore, useProgressStore } from "../../lib/zustand";
 import UserMenu from "../../components/UserMenu";
 import { PathSelector } from "../questionnaire/PathSelector";
 import { EMAILJS_CONFIG, isEmailJSConfigured } from "../../config/emailjs";
-// Import des utilitaires de test (disponibles dans la console)
-import "../../utils/emailjs-test";
 
 const features = [
   {
@@ -361,9 +359,13 @@ Cette personne souhaite rejoindre le programme Early Access de Fyndra.`,
         JSON.stringify(existingSubmissions)
       );
 
-      // Fallback vers mailto
-      const subject = "Demande Early Access - Fyndra";
-      const body = `Bonjour,
+      // Montrer un message d'erreur informatif
+      alert(`❌ Erreur technique: ${error.message}\n\n⏳ Redirection vers votre client email pour alternative...`);
+
+      // Fallback vers mailto après 2 secondes
+      setTimeout(() => {
+        const subject = "Demande Early Access - Fyndra";
+        const body = `Bonjour,
 
 Je souhaite rejoindre le programme early access de Fyndra.
 
@@ -377,11 +379,12 @@ Merci !
 Cordialement,
 ${earlyAccessData.name}`;
 
-      window.location.href = `mailto:${
-        EMAILJS_CONFIG.TO_EMAIL
-      }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        body
-      )}`;
+        window.location.href = `mailto:${
+          EMAILJS_CONFIG.TO_EMAIL
+        }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+          body
+        )}`;
+      }, 2000);
 
       setShowEarlyAccessForm(false);
       setEarlyAccessData({ name: "", email: "", objective: "apprendre" });
