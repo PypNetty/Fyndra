@@ -14,6 +14,14 @@ export const testEmailJS = async () => {
   console.log('Public Key:', EMAILJS_CONFIG.PUBLIC_KEY);
   console.log('To Email:', EMAILJS_CONFIG.TO_EMAIL);
   
+  // DEBUG: Variables d'environnement brutes
+  console.log('\n🔍 Variables d\'environnement brutes:');
+  console.log('NODE_ENV:', import.meta.env.MODE);
+  console.log('VITE_EMAILJS_SERVICE_ID:', import.meta.env.VITE_EMAILJS_SERVICE_ID);
+  console.log('VITE_EMAILJS_TEMPLATE_ID:', import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
+  console.log('VITE_EMAILJS_PUBLIC_KEY:', import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  console.log('Toutes les variables VITE_:', Object.keys(import.meta.env).filter(k => k.startsWith('VITE_')));
+  
   if (!isEmailJSConfigured()) {
     console.error('❌ EmailJS n\'est pas configuré!');
     console.log('📖 Consultez le guide: EMAILJS_SETUP_GUIDE.md');
