@@ -15,11 +15,14 @@ import {
   ChevronRight,
   Clock,
   CheckCircle,
+  Monitor,
 } from "lucide-react";
 import CardList from "./CardList";
 import { technologyBasedData } from "./data/technologies";
 import { useAuthStore, useProgressStore } from "../../lib/zustand";
 import { useSmartNavigation } from "../../lib/navigation";
+import { SimulatedVM } from "../../components/SimulatedVM";
+import { QuestionnaireResults } from "../../lib/vmGenerator";
 
 const QuestionnairePage: React.FC = () => {
   const params = useParams();
@@ -36,6 +39,7 @@ const QuestionnairePage: React.FC = () => {
     Record<number, number>
   >({});
   const [showResults, setShowResults] = useState(false);
+  const [showSimulatedVM, setShowSimulatedVM] = useState(false);
 
   // Extraction des paramètres de route
   const { category, technology } = params;
@@ -148,8 +152,88 @@ const QuestionnairePage: React.FC = () => {
       };
     };
 
+    // Générer les résultats du questionnaire pour la VM simulée
+    const generateQuestionnaireResults = (): QuestionnaireResults => {
+      const score = calculateScore();
+      
+      // Déterminer le niveau basé sur le score
+      let level: 'beginner' | 'intermediate' | 'advanced' = 'beginner';
+      if (score.percentage >= 80) {
+        level = 'advanced';
+      } else if (score.percentage >= 60) {
+        level = 'intermediate';
+      }
+
+      // Mapper les catégories vers les domaines
+      const domainMapping: Record<string, string> = {
+        'Front': 'frontend',
+        'Back': 'backend', 
+        'Cloud': 'cloud',
+        'Infrastructure': 'devops',
+        'Système': 'system',
+        'Réseaux': 'network',
+        'TechInfo': 'security'
+      };
+
+      return {
+        domain: domainMapping[category as string] || 'general',
+        technologies: [technology as string],
+        level,
+        preferences: {
+          learningStyle: score.percentage >= 70 ? 'practical' : 'mixed',
+          complexity: level === 'advanced' ? 'expert' : level === 'intermediate' ? 'realistic' : 'simple'
+        }
+      };
+    };
+
     if (showResults) {
       const score = calculateScore();
+
+      // Afficher la VM simulée si demandé
+      if (showSimulatedVM) {
+        const questionnaireResults = generateQuestionnaireResults();
+        return (
+          <div className="min-h-screen bg-[#010116] text-white">
+            <nav className="border-b border-white/10 bg-[#010116]/80 backdrop-blur-sm">
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <motion.button
+                      onClick={() => setShowSimulatedVM(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-white/80 hover:text-white transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <ArrowLeft className="w-5 h-5" />
+                      Retour aux résultats
+                    </motion.button>
+                    <span className="text-white/40">•</span>
+                    <span className="text-white/60">VM Simulée - {technology}</span>
+                  </div>
+                </div>
+              </div>
+            </nav>
+
+            <div className="container mx-auto px-6 py-8">
+              <div className="mb-6">
+                <h1 className="text-3xl font-bold text-white mb-2">
+                  Environnement de Pratique Simulé
+                </h1>
+                <p className="text-gray-300">
+                  Basé sur vos résultats ({score.percentage}%), voici un environnement de pratique adapté à votre niveau.
+                </p>
+              </div>
+              
+              <SimulatedVM 
+                questionnaireResults={questionnaireResults}
+                onComplete={(vmScore) => {
+                  console.log('VM Session completed with score:', vmScore);
+                  // Optionnel: sauvegarder le score de la VM
+                }}
+              />
+            </div>
+          </div>
+        );
+      }
 
       return (
         <div className="min-h-screen bg-[#010116] text-white">
@@ -269,7 +353,33 @@ const QuestionnairePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4 justify-center">
+              {/* Information sur la VM simulée */}
+              <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 rounded-lg p-6 mb-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <Monitor className="w-8 h-8 text-purple-400" />
+                  <h3 className="text-xl font-bold text-white">
+                    Environnement de Pratique Simulé
+                  </h3>
+                </div>
+                <p className="text-gray-300 mb-4">
+                  Basé sur vos résultats, nous avons généré un environnement de développement simulé 
+                  adapté à votre niveau. Vous pourrez pratiquer {technology} dans un terminal interactif 
+                  avec des exercices personnalisés.
+                </p>
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">
+                    Niveau: {score.percentage >= 80 ? 'Avancé' : score.percentage >= 60 ? 'Intermédiaire' : 'Débutant'}
+                  </span>
+                  <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">
+                    Technologie: {technology}
+                  </span>
+                  <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full">
+                    Interactive
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.button
                   onClick={() => {
                     setCurrentQuestionIndex(0);
@@ -281,6 +391,17 @@ const QuestionnairePage: React.FC = () => {
                 >
                   Refaire le test
                 </motion.button>
+                
+                {/* Bouton pour lancer la VM simulée */}
+                <motion.button
+                  onClick={() => setShowSimulatedVM(true)}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 rounded-lg font-medium flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Monitor className="w-5 h-5" />
+                  Pratiquer dans une VM
+                </motion.button>
+                
                 <motion.button
                   onClick={() => goBack("/questionnaire")}
                   className="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-medium"
